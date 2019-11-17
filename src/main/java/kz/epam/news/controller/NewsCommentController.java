@@ -59,7 +59,7 @@ public class NewsCommentController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String addNews(@ModelAttribute("news") News news, @RequestParam("file") MultipartFile file, Model model) {
 
-        String pathToDirectory = "C:/Users/Danke/Desktop/newsImages/" + news.getSection() + news.getTopic() + news.getShortDescription() + new Random().nextInt(900);
+        String pathToDirectory = "C:/Users/Danke/Desktop/newsImages/images/" + news.getSection() + news.getTopic() + news.getShortDescription() + new Random().nextInt(900);
 
         newsServiceInterface.uploadNewsImageFile(file, pathToDirectory);
 
