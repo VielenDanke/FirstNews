@@ -8,24 +8,31 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>Login</title>
     <jsp:include page="config.jsp"/>
+    <link href="<c:url value="/assets/css/custom.css" />" rel="stylesheet">
 </head>
-<body>
-    <form:form action="login" method="post" modelAttribute="user">
-        <tr>
-            <td>Username: </td>
-            <td><form:input path="username"/></td>
-        </tr>
-        <tr>
-            <td>Password: </td>
-            <td><form:password path="password" /></td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="Login"></td>
-        </tr>
-    </form:form>
+<body class="text-center">
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+
+        <div class="fadeIn first">
+            <img src="${pageContext.request.contextPath}/assets/img/breaking_news.png" id="icon" alt="User Icon" />
+        </div>
+
+        <form:form action="login" method="post" modelAttribute="user">
+            <form:input path="username" id="inputEmail" cssClass="fadeIn second"/>
+            <form:password path="password" id="inputPassword" cssClass="fadeIn third"/>
+            <input type="submit" class="fadeIn fourth" value="<spring:message code="index.login"/>">
+        </form:form>
+
+        <div id="formFooter">
+            <a class="underlineHover" href="${pageContext.request.contextPath}/registration"><spring:message code="index.registration"/></a>
+        </div>
+    </div>
+</div>
 </body>
 </html>
