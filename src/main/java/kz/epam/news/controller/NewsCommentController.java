@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Random;
 
 @Controller
-@SessionAttributes("allNews")
+@SessionAttributes({"allNews", "lastNews"})
 public class NewsCommentController {
 
     @Autowired
