@@ -2,17 +2,9 @@ package kz.epam.news.repository.impl;
 
 import kz.epam.news.entity.News;
 import kz.epam.news.repository.interfaces.NewsDao;
-import org.hibernate.annotations.NamedNativeQueries;
 import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static kz.epam.news.config.HibernateConfig.CACHEABLE;

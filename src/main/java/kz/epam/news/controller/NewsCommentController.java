@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
@@ -40,8 +39,14 @@ public class NewsCommentController {
 
         List<News> allNews = newsServiceInterface.getAll();
 
+        News lastNews = allNews.get(allNews.size() - 1);
+
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("allNews", allNews);
+
+        if (lastNews != null) {
+            modelAndView.addObject("lastNews", lastNews);
+        }
 
         return modelAndView;
     }
