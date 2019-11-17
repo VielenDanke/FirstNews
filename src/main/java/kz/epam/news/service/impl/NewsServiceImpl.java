@@ -75,7 +75,7 @@ public class NewsServiceImpl implements NewsService<News> {
                 file.getContentType().equalsIgnoreCase(imageFormatPng)) {
             try {
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(pathToDirectory + file.getOriginalFilename());
+                Path path = Paths.get(pathToDirectory);
                 Files.write(path, bytes);
             } catch (IOException e) {
                 throw new WrongFileException("Something went wrong");

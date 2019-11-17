@@ -83,7 +83,7 @@
                     </security:authorize>
                 </div>
                 <div class="col-auto d-none d-lg-block">
-                    <img src="${news.fileName}" class="card-img" alt="..." width="200" height="250">
+                    <img src="<c:url value="image/${news.fileName}"/>" class="card-img" alt="image" width="50" height="50">
                 </div>
             </div>
         </div>
