@@ -65,7 +65,9 @@
         <div class="col-md-6 px-0">
             <h1 class="display-4 font-italic">${lastNews.topic}</h1>
             <p class="lead my-3">${lastNews.shortDescription}</p>
-            <p class="lead mb-0"><a href="${pageContext.request.contextPath}/comments?id=${lastNews.id}&section=${lastNews.section}" class="text-white font-weight-bold"><spring:message code="index.read.comment"/></a></p>
+            <security:authorize access="isAuthenticated()">
+                <p class="lead mb-0"><a href="${pageContext.request.contextPath}/comments?id=${lastNews.id}&section=${lastNews.section}" class="text-white font-weight-bold"><spring:message code="index.read.comment"/></a></p>
+            </security:authorize>
         </div>
     </div>
     <div class="row mb-2">
