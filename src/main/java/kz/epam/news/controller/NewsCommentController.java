@@ -2,6 +2,7 @@ package kz.epam.news.controller;
 
 import kz.epam.news.entity.Comment;
 import kz.epam.news.entity.News;
+import kz.epam.news.exception.WrongFileException;
 import kz.epam.news.service.interfaces.CommentService;
 import kz.epam.news.service.interfaces.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.util.Base64;
 import java.util.List;
 import java.util.Random;
 
@@ -67,12 +72,12 @@ public class NewsCommentController {
         String uniqueCodeWithFileExtension = news.getTopic() + news.getShortDescription() +
                 new Random().nextInt(900) + file.getOriginalFilename();
 
-        String pathToDirectory = "C:/Users/Danke/Desktop/newsImages/image/" + uniqueCodeWithFileExtension;
-
-        newsServiceInterface.uploadNewsImageFile(file, pathToDirectory);
-
+        try {
+            news.setFileInputStreamName(Base64.getEncoder().encodeToString(file.getBytes()));
+        } catch (IOException e) {
+            throw new WrongFileException(e.getMessage());
+        }
         news.setFileName(uniqueCodeWithFileExtension);
-
         newsServiceInterface.add(news);
 
         model.addAttribute("errorInFile", "File successfully uploaded");

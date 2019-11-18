@@ -3,8 +3,11 @@ package kz.epam.news.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,8 @@ public class News {
     private String description;
     @Column(name = "FILE_NAME")
     private String fileName;
+    @Column(name = "FILE_INPUT_STREAM_NAME")
+    private String fileInputStreamName;
     @OneToMany(
             mappedBy = "news",
             cascade = CascadeType.ALL,

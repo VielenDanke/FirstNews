@@ -17,5 +17,5 @@ public interface NewsService<E extends News> extends ServiceCRUD<News> {
 
     E getNewsByID(Long id);
 
-    void uploadNewsImageFile(MultipartFile file, String pathToDirectory) throws WrongFileException;
+//    void uploadNewsImageFile(MultipartFile file, String pathToDirectory) throws WrongFileException;
 }

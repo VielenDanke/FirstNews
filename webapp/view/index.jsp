@@ -82,7 +82,7 @@
                     </security:authorize>
                 </div>
                 <div class="col-auto d-none d-lg-block">
-                    <img src="<c:url value="image/${news.fileName}"/>" class="card-img" alt="image" width="100" height="250">
+                    <img src="data:image/jpg;base64,${news.fileInputStreamName}" class="card-img" alt="image" width="50" height="120">
                 </div>
             </div>
         </div>

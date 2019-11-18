@@ -12,6 +12,7 @@ import java.io.File;
 
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
+    // 5 MB
     private static final Integer MAX_UPLOAD_SIZE_IN_MB = 5 * 1024 * 1024;
 
     @Override
