@@ -13,11 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Blob;
-import java.util.Base64;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 @SessionAttributes({"allNews", "lastNews"})
@@ -43,15 +39,11 @@ public class NewsCommentController {
     public ModelAndView displayAllNews() {
 
         List<News> allNews = newsServiceInterface.getAll();
-
-        News lastNews = allNews.get(allNews.size() - 1);
+        News news = allNews.get(allNews.size() - 1);
 
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("allNews", allNews);
-
-        if (lastNews != null) {
-            modelAndView.addObject("lastNews", lastNews);
-        }
+        modelAndView.addObject("lastNews", news);
 
         return modelAndView;
     }

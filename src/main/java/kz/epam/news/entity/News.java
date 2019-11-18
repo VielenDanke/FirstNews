@@ -3,11 +3,8 @@ package kz.epam.news.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.io.InputStream;
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 

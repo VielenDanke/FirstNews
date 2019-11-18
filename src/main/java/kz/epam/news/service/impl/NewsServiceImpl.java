@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +24,14 @@ public class NewsServiceImpl implements NewsService<News> {
 
     @Override
     public List<News> getAll() {
+        List<News> newsList = newsDao.getAll();
+
+        if (newsList.isEmpty()) {
+            newsList = new ArrayList<>();
+            newsList.add(new News());
+
+            return newsList;
+        }
         return newsDao.getAll();
     }
 
