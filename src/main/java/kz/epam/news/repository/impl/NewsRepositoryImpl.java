@@ -53,7 +53,7 @@ public class NewsRepositoryImpl implements NewsDao<News> {
 
     @Override
     public News getNewsByID(Long id) {
-        Query query = entityManager.createNativeQuery("select n.ID, n.SECTION, n.TOPIC, n.DESCRIPTION, n.SHORT_DESCRIPTION, n.FILE_NAME, n.FILE_INPUT_STREAM_NAME from News n where n.ID=:id", News.class).setHint(CACHEABLE, CACHEABLE_FLAG);
+        Query query = entityManager.createNativeQuery("select n.ID, n.SECTION, n.TOPIC, n.DESCRIPTION, n.SHORT_DESCRIPTION, n.FILE_NAME, n.FILE_INPUT_STREAM_NAME, n.LOCAL_DATE from News n where n.ID=:id", News.class).setHint(CACHEABLE, CACHEABLE_FLAG);
         query.setParameter("id", id);
         return (News) query.getSingleResult();
     }

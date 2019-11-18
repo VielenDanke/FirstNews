@@ -5,10 +5,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@NamedQuery(name = "News.findBySection", query = "select n From News n where n.section=:section")
+@NamedQuery(name = "News.findBySection", query = "select n From News n where n.section like concat('%',:section,'%')")
 @Entity
 @NoArgsConstructor
 @Data
@@ -34,6 +35,8 @@ public class News {
     private String fileName;
     @Column(name = "FILE_INPUT_STREAM_NAME")
     private String fileInputStreamName;
+    @Column(name = "LOCAL_DATE")
+    private LocalDate localDate;
     @OneToMany(
             mappedBy = "news",
             cascade = CascadeType.ALL,

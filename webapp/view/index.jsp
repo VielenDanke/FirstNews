@@ -75,7 +75,7 @@
                 <div class="col p-4 d-flex flex-column position-static">
                     <strong class="d-inline-block mb-2 text-primary">${news.section}</strong>
                     <h3 class="mb-0">${news.topic}</h3>
-                    <div class="mb-1 text-muted">Nov 12</div>
+                    <div class="mb-1 text-muted">${news.localDate}</div>
                     <p class="card-text mb-auto">${news.shortDescription}</p>
                     <security:authorize access="isAuthenticated()">
                         <a href="${pageContext.request.contextPath}/comments?id=${news.id}&section=${news.section}" class="stretched-link"><spring:message code="index.read.comment"/></a>

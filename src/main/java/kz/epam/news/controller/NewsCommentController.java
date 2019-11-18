@@ -69,6 +69,7 @@ public class NewsCommentController {
         } catch (IOException e) {
             throw new WrongFileException(e.getMessage());
         }
+
         news.setFileName(uniqueCodeWithFileExtension);
         newsServiceInterface.add(news);
 
