@@ -12,7 +12,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <html>
 <head>
-    <title>Main page</title>
+    <title><spring:message code="index.main.page"/></title>
     <jsp:include page="config.jsp"/>
 </head>
 <body>

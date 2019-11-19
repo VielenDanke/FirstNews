@@ -11,7 +11,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Registration</title>
+    <title><spring:message code="index.registration"/></title>
     <jsp:include page="config.jsp"/>
 </head>
 <body class="text-center">

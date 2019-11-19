@@ -11,7 +11,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Login</title>
+    <title><spring:message code="index.login"/></title>
     <jsp:include page="config.jsp"/>
     <link href="<c:url value="/assets/css/custom.css" />" rel="stylesheet">
 </head>
