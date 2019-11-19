@@ -11,4 +11,6 @@ public interface ServiceCRUD<E> {
     void deleteAll();
 
     void update(E e);
+
+    void deleteById(Long id);
 }

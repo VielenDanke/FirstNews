@@ -75,4 +75,9 @@ public class NewsRepositoryImpl implements NewsDao<News> {
     public List<String> getSections() {
         return entityManager.createNativeQuery("select * from SECTIONS").getResultList();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        entityManager.createNativeQuery("delete from USERS where ID=?").setParameter(1, id).executeUpdate();
+    }
 }

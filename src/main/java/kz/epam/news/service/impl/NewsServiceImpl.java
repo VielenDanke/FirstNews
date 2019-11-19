@@ -72,4 +72,10 @@ public class NewsServiceImpl implements NewsService<News> {
     public void update(News news) {
         newsDao.update(news);
     }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        newsDao.deleteById(id);
+    }
 }

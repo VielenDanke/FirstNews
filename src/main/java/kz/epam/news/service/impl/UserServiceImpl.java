@@ -47,4 +47,10 @@ public class UserServiceImpl implements UserService<User> {
     public void update(User user) {
         userDao.update(user);
     }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        userDao.deleteById(id);
+    }
 }

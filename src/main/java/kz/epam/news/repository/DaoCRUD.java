@@ -11,4 +11,6 @@ public interface DaoCRUD<E> {
     void deleteAll();
 
     void update(E e);
+
+    void deleteById(Long id);
 }

@@ -45,4 +45,9 @@ public class CommentRepositoryImpl implements CommentDao<Comment> {
     public void update(Comment comment) {
         entityManager.merge(comment);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        entityManager.createNamedQuery("Comment.deleteById", Comment.class).setParameter("id", id).executeUpdate();
+    }
 }

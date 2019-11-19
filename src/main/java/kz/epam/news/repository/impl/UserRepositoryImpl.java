@@ -61,4 +61,9 @@ public class UserRepositoryImpl implements UserDao<User> {
     public void update(User user) {
         entityManager.merge(user);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        entityManager.createQuery("delete from User u where u.id=:id").setParameter("id", id).executeUpdate();
+    }
 }

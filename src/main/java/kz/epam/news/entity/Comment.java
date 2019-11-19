@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
+@NamedQuery(name = "Comment.deleteById", query = "delete from Comment c where c.id=:id")
 @Entity
 @NoArgsConstructor
 @Data
