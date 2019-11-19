@@ -62,4 +62,14 @@ public class NewsServiceImpl implements NewsService<News> {
     public News getNewsByID(Long id) {
         return newsDao.getNewsByID(id);
     }
+
+    @Override
+    public List<String> getSectionList() {
+        return newsDao.getSections();
+    }
+
+    @Override
+    public void update(News news) {
+        newsDao.update(news);
+    }
 }

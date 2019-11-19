@@ -42,4 +42,9 @@ public class UserServiceImpl implements UserService<User> {
     public Optional<User> getUserByUsername(String username) {
         return userDao.getUserByUsername(username);
     }
+
+    @Override
+    public void update(User user) {
+        userDao.update(user);
+    }
 }

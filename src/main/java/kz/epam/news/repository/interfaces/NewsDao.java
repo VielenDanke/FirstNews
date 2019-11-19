@@ -14,4 +14,6 @@ public interface NewsDao<E extends News> extends DaoCRUD<News> {
     List<E> getNewsByDescriptionLike(String descriptionLike);
 
     E getNewsByID(Long id);
+
+    List<String> getSections();
 }

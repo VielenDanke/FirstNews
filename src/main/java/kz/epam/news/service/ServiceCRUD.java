@@ -9,4 +9,6 @@ public interface ServiceCRUD<E> {
     List<E> getAll();
 
     void deleteAll();
+
+    void update(E e);
 }

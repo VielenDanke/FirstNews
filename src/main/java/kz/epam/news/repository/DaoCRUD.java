@@ -9,4 +9,6 @@ public interface DaoCRUD<E> {
     List<E> getAll();
 
     void deleteAll();
+
+    void update(E e);
 }

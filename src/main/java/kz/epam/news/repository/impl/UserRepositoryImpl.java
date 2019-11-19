@@ -55,6 +55,10 @@ public class UserRepositoryImpl implements UserDao<User> {
                 .getResultList()
                 .stream()
                 .findFirst();
+    }
 
+    @Override
+    public void update(User user) {
+        entityManager.merge(user);
     }
 }

@@ -36,4 +36,9 @@ public class CommentServiceImpl implements CommentService<Comment> {
     public List<Comment> getAllCommentsByNewsID(Long newsID) {
         return commentDao.selectAllCommentsByNewsID(newsID);
     }
+
+    @Override
+    public void update(Comment comment) {
+        commentDao.update(comment);
+    }
 }

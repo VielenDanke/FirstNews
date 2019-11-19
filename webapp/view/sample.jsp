@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <html>
 <head>
     <title>Sample page</title>
@@ -21,19 +23,19 @@ ${errorInFile}
         </tr>
         <tr>
             <td>Section: </td>
-            <td><form:input path="section"/></td>
+            <td><form:select path="section" items="${sectionList}"/></td>
         </tr>
         <tr>
             <td>Topic: </td>
-            <td><form:input path="topic"/></td>
+            <td><form:input path="topic" onkeyup="return symbolChecker(this)"/></td>
         </tr>
         <tr>
             <td>Short description: </td>
-            <td><form:input path="shortDescription"/></td>
+            <td><form:input path="shortDescription" onkeyup="return symbolChecker(this)"/></td>
         </tr>
         <tr>
             <td>Description: </td>
-            <td><form:input path="description"/></td>
+            <td><form:input path="description" onkeyup="return symbolChecker(this)"/></td>
         </tr>
         <tr>
             <td colspan="2"><input type="submit" value="Save"></td>

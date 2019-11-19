@@ -8,25 +8,31 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>Registration</title>
     <jsp:include page="config.jsp"/>
 </head>
-<body>
-${error}
-<form:form action="registration" method="post" modelAttribute="user">
-    <tr>
-        <td>Username: </td>
-        <td><form:input path="username"/></td>
-    </tr>
-    <tr>
-        <td>Password: </td>
-        <td><form:password path="password"/></td>
-    </tr>
-    <tr>
-        <td><input type="submit" value="Registration"></td>
-    </tr>
-</form:form>
+<body class="text-center">
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+
+        ${error}
+        <div class="fadeIn first">
+            <img src="${pageContext.request.contextPath}/assets/img/breaking_news.png" id="icon" alt="User Icon" />
+        </div>
+
+        <form:form action="registration" method="post" modelAttribute="user">
+            <form:input path="username" cssClass="fadeIn second" onkeyup="return symbolChecker(this)"/>
+            <form:password path="password" cssClass="fadeIn third" onkeyup="return symbolChecker(this)"/>
+            <input type="submit" class="fadeIn fourth" value="<spring:message code="index.registration"/>">
+        </form:form>
+
+        <div id="formFooter">
+            <a class="underlineHover" href="${pageContext.request.contextPath}/login"><spring:message code="index.login"/></a>
+        </div>
+    </div>
+</div>
 </body>
 </html>

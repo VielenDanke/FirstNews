@@ -5,6 +5,8 @@ import kz.epam.news.repository.interfaces.NewsDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 import static kz.epam.news.config.HibernateConfig.CACHEABLE;
@@ -56,5 +58,21 @@ public class NewsRepositoryImpl implements NewsDao<News> {
         Query query = entityManager.createNativeQuery("select n.ID, n.SECTION, n.TOPIC, n.DESCRIPTION, n.SHORT_DESCRIPTION, n.FILE_NAME, n.FILE_INPUT_STREAM_NAME, n.LOCAL_DATE from News n where n.ID=:id", News.class).setHint(CACHEABLE, CACHEABLE_FLAG);
         query.setParameter("id", id);
         return (News) query.getSingleResult();
+    }
+
+    @Override
+    @Transactional
+    public void update(News news) {
+        entityManager.createQuery("update News n set n.topic=:topic, n.description=:description, n.shortDescription=:shortDescription where n.id=:id")
+        .setParameter("topic", news.getTopic())
+        .setParameter("description", news.getDescription())
+        .setParameter("shortDescription", news.getShortDescription())
+        .setParameter("id", news.getId())
+        .executeUpdate();
+    }
+
+    @Override
+    public List<String> getSections() {
+        return entityManager.createNativeQuery("select * from SECTIONS").getResultList();
     }
 }

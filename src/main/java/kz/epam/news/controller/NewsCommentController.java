@@ -2,7 +2,7 @@ package kz.epam.news.controller;
 
 import kz.epam.news.entity.Comment;
 import kz.epam.news.entity.News;
-import kz.epam.news.exception.WrongFileException;
+import kz.epam.news.exception.WrongDataException;
 import kz.epam.news.service.interfaces.CommentService;
 import kz.epam.news.service.interfaces.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,8 @@ public class NewsCommentController {
     }
 
     @RequestMapping("/add")
-    public String addNews() {
+    public String addNews(Model model) {
+        model.addAttribute("sectionList", newsServiceInterface.getSectionList());
         return "sample";
     }
 
@@ -67,7 +68,7 @@ public class NewsCommentController {
         try {
             news.setFileInputStreamName(Base64.getEncoder().encodeToString(file.getBytes()));
         } catch (IOException e) {
-            throw new WrongFileException(e.getMessage());
+            throw new WrongDataException(e.getMessage());
         }
 
         news.setFileName(uniqueCodeWithFileExtension);
@@ -109,5 +110,29 @@ public class NewsCommentController {
         modelAndView.addObject("news_by_id", news);
 
         return modelAndView;
+    }
+
+    @GetMapping("/searching_by")
+    public ModelAndView startSearchingByUserDecision(@RequestParam("radio") String radio, @RequestParam("search") String search) {
+
+        ModelAndView modelAndView = new ModelAndView("index");
+
+        switch (radio) {
+            case "Topic":
+                modelAndView.addObject("allNews", newsServiceInterface.getByTopicLike(search));
+                return modelAndView;
+            case "Description":
+                modelAndView.addObject("allNews", newsServiceInterface.getByDescriptionLike(search));
+                return modelAndView;
+            default:
+                throw new WrongDataException("Not a valid searching method");
+        }
+    }
+
+    @PostMapping("/{id}")
+    public String updateNews(@PathVariable("id") Long id, @ModelAttribute("news") News news) {
+        news.setId(id);
+        newsServiceInterface.update(news);
+        return "redirect:/";
     }
 }

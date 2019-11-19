@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
-public class WrongFileExceptionHandler {
+public class WrongDataExceptionHandler {
 
     @Autowired
     private Logger logger;
 
-    @ExceptionHandler(WrongFileException.class)
+    @ExceptionHandler(WrongDataException.class)
     public String handleWrongFileException(HttpServletRequest request, Exception ex) {
 
         logger.info("WrongFileException is happened: " + request.getRequestURL());

@@ -1,9 +1,7 @@
 package kz.epam.news.service.interfaces;
 
 import kz.epam.news.entity.News;
-import kz.epam.news.exception.WrongFileException;
 import kz.epam.news.service.ServiceCRUD;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,5 +15,5 @@ public interface NewsService<E extends News> extends ServiceCRUD<News> {
 
     E getNewsByID(Long id);
 
-//    void uploadNewsImageFile(MultipartFile file, String pathToDirectory) throws WrongFileException;
+    List<String> getSectionList();
 }

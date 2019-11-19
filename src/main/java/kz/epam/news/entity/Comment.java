@@ -24,7 +24,7 @@ public class Comment {
     @Column(name = "AUTHOR_NAME")
     private String authorName;
     @Column(name = "DESCRIPTION")
-    private String description;
+    private String descriptionComment;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "NEWS_ID", updatable = false, insertable = false)
     private News news;

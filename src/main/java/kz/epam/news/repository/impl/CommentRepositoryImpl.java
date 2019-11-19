@@ -40,4 +40,9 @@ public class CommentRepositoryImpl implements CommentDao<Comment> {
         query.setParameter("newsID", newsID);
         return query.getResultList();
     }
+
+    @Override
+    public void update(Comment comment) {
+        entityManager.merge(comment);
+    }
 }

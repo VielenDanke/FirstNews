@@ -70,6 +70,14 @@
             </security:authorize>
         </div>
     </div>
+    <security:authorize access="isAuthenticated()">
+        <form method="get" action="${pageContext.request.contextPath}/searching_by">
+            <input type="text" name="search" placeholder="Type the text..." maxlength="50" onkeyup="return symbolChecker(this)">
+            <input type="radio" name="radio" value="Topic" checked>Searching by topic
+            <input type="radio" name="radio" value="Description">Searching by description
+            <input type="submit" value="Searching" class="btn btn-primary">
+        </form>
+    </security:authorize>
     <div class="row mb-2">
         <c:forEach items="${allNews}" var="news">
         <div class="col-md-6">
