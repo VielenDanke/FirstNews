@@ -36,8 +36,8 @@ public class NewsRepositoryImpl implements NewsDao<News> {
 
     @Override
     public List<News> getNewsByTopicLike(String topicLike) {
-        Query query = entityManager.createQuery("select n from News n where n.topic like concat('%',:topic,'%')").setHint(CACHEABLE, CACHEABLE_FLAG);
-        query.setParameter("topic", topicLike);
+        Query query = entityManager.createQuery("select n from News n where lower(n.topic) like concat('%',:topic,'%')").setHint(CACHEABLE, CACHEABLE_FLAG);
+        query.setParameter("topic", topicLike.toLowerCase());
         return query.getResultList();
     }
 
@@ -48,8 +48,8 @@ public class NewsRepositoryImpl implements NewsDao<News> {
 
     @Override
     public List<News> getNewsByDescriptionLike(String descriptionLike) {
-        Query query = entityManager.createQuery("select n from News n where n.description like concat('%',:descriptionLike,'%')").setHint(CACHEABLE, CACHEABLE_FLAG);
-        query.setParameter("descriptionLike", descriptionLike);
+        Query query = entityManager.createQuery("select n from News n where upper(n.description) like concat('%',:descriptionLike,'%')").setHint(CACHEABLE, CACHEABLE_FLAG);
+        query.setParameter("descriptionLike", descriptionLike.toUpperCase());
         return query.getResultList();
     }
 
@@ -78,6 +78,6 @@ public class NewsRepositoryImpl implements NewsDao<News> {
 
     @Override
     public void deleteById(Long id) {
-        entityManager.createNativeQuery("delete from USERS where ID=?").setParameter(1, id).executeUpdate();
+        entityManager.createNativeQuery("delete from NEWS where ID=?").setParameter(1, id).executeUpdate();
     }
 }

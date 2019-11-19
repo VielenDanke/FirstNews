@@ -147,6 +147,6 @@ public class NewsCommentController {
     @PostMapping("/delete/comment/{id}")
     public String deleteComment(@PathVariable("id") Long id) {
         commentServiceInterface.deleteById(id);
-        return "comments";
+        return "redirect:/";
     }
 }
