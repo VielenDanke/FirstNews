@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.*;
 
 @Controller
@@ -99,13 +100,14 @@ public class NewsCommentController {
     }
 
     @RequestMapping("/comments")
-    public ModelAndView getAllComments(@RequestParam("id") Long id) {
+    public ModelAndView getAllComments(@RequestParam("id") Long id, Principal principal) {
 
         News news = newsServiceInterface.getNewsByID(id);
 
         List<Comment> comments = commentServiceInterface.getAllCommentsByNewsID(id);
 
         ModelAndView modelAndView = new ModelAndView("comments");
+        modelAndView.addObject("username", principal.getName());
         modelAndView.addObject("comments_to_news", comments);
         modelAndView.addObject("news_by_id", news);
 

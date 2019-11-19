@@ -25,7 +25,7 @@ ${news_by_id.localDate}
     </c:forEach>
     <form:form action="add_comment" method="post" modelAttribute="comment">
         <form:hidden path="newsID" value="${param.id}"/>
-        <form:hidden path="authorName"/>
+        <form:hidden path="authorName" value="${username}"/>
         <form:input path="descriptionComment" onkeyup="return symbolChecker(this)"/>
         <input type="submit" value="Add comment">
     </form:form>
