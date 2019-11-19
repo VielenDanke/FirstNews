@@ -22,6 +22,11 @@ ${news_by_id.localDate}
     <c:forEach var="comment" items="${comments_to_news}">
         ${comment.authorName}
         ${comment.descriptionComment}
+        <security:authorize access="hasAnyRole('ADMIN', 'SUPER_ADMIN')">
+            <form:form action="delete/comment/${comment.id}" method="post">
+                <input type="submit" value="Delete comment" class="btn btn-primary">
+            </form:form>
+        </security:authorize>
     </c:forEach>
     <form:form action="add_comment" method="post" modelAttribute="comment">
         <form:hidden path="newsID" value="${param.id}"/>
@@ -30,11 +35,16 @@ ${news_by_id.localDate}
         <input type="submit" value="Add comment">
     </form:form>
 <security:authorize access="hasAnyRole('ADMIN', 'SUPER_ADMIN')">
-    <form:form action="${news_by_id.id}" method="put" modelAttribute="news_by_id">
+    <form:form action="${news_by_id.id}" method="post" modelAttribute="news_by_id">
         <form:input path="topic" onkeyup="return symbolChecker(this)"/>
         <form:input path="shortDescription" onkeyup="return symbolChecker(this)"/>
         <form:input path="description" onkeyup="return symbolChecker(this)"/>
         <input type="submit" value="Update" class="btn btn-primary">
+    </form:form>
+</security:authorize>
+<security:authorize access="hasAnyRole('ADMIN', 'SUPER_ADMIN')">
+    <form:form action="delete/${news_by_id.id}" method="post">
+        <input type="submit" value="Delete news" class="btn btn-primary">
     </form:form>
 </security:authorize>
 </body>
