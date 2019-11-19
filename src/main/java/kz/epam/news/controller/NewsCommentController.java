@@ -137,4 +137,16 @@ public class NewsCommentController {
         newsServiceInterface.update(news);
         return "redirect:/";
     }
+
+    @PostMapping("/delete/{id}")
+    public String deleteNews(@PathVariable("id") Long id) {
+        newsServiceInterface.deleteById(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/delete/comment/{id}")
+    public String deleteComment(@PathVariable("id") Long id) {
+        commentServiceInterface.deleteById(id);
+        return "comments";
+    }
 }

@@ -72,4 +72,16 @@ public class UserController {
         userServiceInterface.add(user);
         return "redirect:/";
     }
+
+    @PostMapping("/delete/user/{id}")
+    public String deleteUserById(@PathVariable("id") Long id) {
+        userServiceInterface.deleteById(id);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/users")
+    public String toUserPage(Model model) {
+        model.addAttribute("userList", userServiceInterface.getAll());
+        return "users";
+    }
 }

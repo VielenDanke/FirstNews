@@ -59,6 +59,9 @@
             <security:authorize access="hasRole('SUPER_ADMIN')">
                 <a class="p-2 text-muted" href="${pageContext.request.contextPath}/add_admin"><spring:message code="index.add.admin"/></a>
             </security:authorize>
+            <security:authorize access="hasAnyRole('ADMIN','SUPER_ADMIN')">
+                <a class="p-2 text-muted" href="${pageContext.request.contextPath}/users">Users</a>
+            </security:authorize>
         </nav>
     </div>
     <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
