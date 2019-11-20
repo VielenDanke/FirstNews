@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%--
   Created by IntelliJ IDEA.
   User: Danke
@@ -12,15 +13,29 @@
 <html>
 <head>
     <title><spring:message code="index.word.users"/></title>
+    <jsp:include page="config.jsp"/>
 </head>
 <body>
-    <c:forEach var="userFromDB" items="${userList}">
-        ${userFromDB.id}
-        ${userFromDB.username}
-        <form:form action="delete/user/${userFromDB.id}">
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col"><spring:message code="index.word.username"/></th>
+        <th scope="col"><spring:message code="index.word.delete"/></th>
+    </tr>
+    </thead>
+    <tbody>
+<c:forEach var="userFromDB" items="${userList}">
+    <tr>
+        <th scope="row">${userFromDB.id}</th>
+        <td>${userFromDB.username}</td>
+        <td><form:form action="delete/user/${userFromDB.id}">
             <input type="submit" value="<spring:message code="index.word.delete"/>" class="btn btn-primary"/>
-        </form:form>
-    </c:forEach>
+        </form:form></td>
+    </tr>
+</c:forEach>
+    </tbody>
+</table>
 <a href="${pageContext.request.contextPath}/"><spring:message code="index.main.page"/></a>
 </body>
 </html>

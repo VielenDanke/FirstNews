@@ -13,6 +13,7 @@
 <head>
     <title><spring:message code="index.registration"/></title>
     <jsp:include page="config.jsp"/>
+    <link href="<c:url value="/assets/css/custom.css" />" rel="stylesheet">
 </head>
 <body class="text-center">
 <div class="wrapper fadeInDown">

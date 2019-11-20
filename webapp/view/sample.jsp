@@ -17,29 +17,25 @@
 <body>
 ${errorInFile}
     <form:form action="save" method="post" modelAttribute="news" enctype="multipart/form-data" acceptCharset="UTF-8">
-        <tr>
-            <td>File: </td>
-            <td><input type="file" name="file"/></td>
-        </tr>
-        <tr>
-            <td>Section: </td>
-            <td><form:select path="section" items="${sectionList}"/></td>
-        </tr>
-        <tr>
-            <td>Topic: </td>
-            <td><form:input path="topic" onkeyup="return symbolChecker(this)"/></td>
-        </tr>
-        <tr>
-            <td>Short description: </td>
-            <td><form:input path="shortDescription" onkeyup="return symbolChecker(this)"/></td>
-        </tr>
-        <tr>
-            <td>Description: </td>
-            <td><form:input path="description" onkeyup="return symbolChecker(this)"/></td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit" value="Save"></td>
-        </tr>
+        <div class="card" style="width: 18rem;">
+            <spring:message code="index.word.file"/>: <input type="file" name="file"/>
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text"><spring:message code="index.word.section"/>: <form:select path="section" items="${sectionList}"/></p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><spring:message code="index.word.topic"/>:
+                    <form:input path="topic" onkeyup="return symbolChecker(this)"/></li>
+                <li class="list-group-item"><spring:message code="index.word.short.description"/>:
+                    <form:input path="shortDescription" onkeyup="return symbolChecker(this)"/></li>
+                <li class="list-group-item"><spring:message code="index.word.description"/>:
+                    <form:input path="description" onkeyup="return symbolChecker(this)"/></li>
+            </ul>
+            <div class="card-body">
+                <input type="submit" value="<spring:message code="index.word.save"/>">
+                <a href="${pageContext.request.contextPath}/" class="card-link"><spring:message code="index.main.page"/></a>
+            </div>
+        </div>
     </form:form>
 </body>
 </html>

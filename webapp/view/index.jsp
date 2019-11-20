@@ -14,6 +14,12 @@
 <head>
     <title><spring:message code="index.main.page"/></title>
     <jsp:include page="config.jsp"/>
+    <style>
+        .responsive {
+            max-height: 150px;
+            max-width: 150px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -50,17 +56,17 @@
     </header>
     <div class="nav-scroller py-1 mb-2">
         <nav class="nav d-flex justify-content-between">
-            <a class="p-2 text-muted" href="${pageContext.request.contextPath}/section?section=technology"><spring:message code="index.section.tech"/></a>
-            <a class="p-2 text-muted" href="${pageContext.request.contextPath}/section?section=business"><spring:message code="index.section.business"/></a>
-            <a class="p-2 text-muted" href="${pageContext.request.contextPath}/section?section=sport"><spring:message code="index.section.sport"/></a>
+            <a class="p-2 text-muted" href="${pageContext.request.contextPath}/section?section=Technology"><spring:message code="index.section.tech"/></a>
+            <a class="p-2 text-muted" href="${pageContext.request.contextPath}/section?section=Business"><spring:message code="index.section.business"/></a>
+            <a class="p-2 text-muted" href="${pageContext.request.contextPath}/section?section=Sport"><spring:message code="index.section.sport"/></a>
             <security:authorize access="hasRole('ADMIN')">
                 <a class="p-2 text-muted" href="${pageContext.request.contextPath}/add"><spring:message code="index.add.news"/></a>
             </security:authorize>
             <security:authorize access="hasRole('SUPER_ADMIN')">
                 <a class="p-2 text-muted" href="${pageContext.request.contextPath}/add_admin"><spring:message code="index.add.admin"/></a>
             </security:authorize>
-            <security:authorize access="hasAnyRole('ADMIN','SUPER_ADMIN')">
-                <a class="p-2 text-muted" href="${pageContext.request.contextPath}/users">Users</a>
+            <security:authorize access="hasAnyRole('ADMIN', 'SUPER_ADMIN')">
+                <a class="p-2 text-muted" href="${pageContext.request.contextPath}/users"><spring:message code="index.word.users"/></a>
             </security:authorize>
         </nav>
     </div>
@@ -75,10 +81,10 @@
     </div>
     <security:authorize access="isAuthenticated()">
         <form method="get" action="${pageContext.request.contextPath}/searching_by">
-            <input type="text" name="search" placeholder="Type the text..." maxlength="50" onkeyup="return symbolChecker(this)">
-            <input type="radio" name="radio" value="Topic" checked>Searching by topic
-            <input type="radio" name="radio" value="Description">Searching by description
-            <input type="submit" value="Searching" class="btn btn-primary">
+            <input type="text" name="search" placeholder="<spring:message code="index.type.text.placeholder"/>" maxlength="50" onkeyup="return symbolChecker(this)">
+            <input type="radio" name="radio" value="Topic" checked><spring:message code="index.searching.by.topic"/>
+            <input type="radio" name="radio" value="Description"><spring:message code="index.searching.by.description"/>
+            <input type="submit" value="<spring:message code="index.searching"/>" class="btn btn-primary">
         </form>
     </security:authorize>
     <div class="row mb-2">
@@ -95,7 +101,7 @@
                     </security:authorize>
                 </div>
                 <div class="col-auto d-none d-lg-block">
-                    <img src="data:image/jpg;base64,${news.fileInputStreamName}" class="card-img" alt="image" width="50" height="120">
+                    <img src="data:image/jpg;base64,${news.fileInputStreamName}" class="responsive" alt="image">
                 </div>
             </div>
         </div>
