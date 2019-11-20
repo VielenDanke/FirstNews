@@ -40,7 +40,6 @@ public class UserRepositoryImpl implements UserDao<User> {
                 .getResultList()
                 .stream()
                 .findFirst();
-
     }
 
     @Override
@@ -52,7 +51,6 @@ public class UserRepositoryImpl implements UserDao<User> {
 
     @Override
     public Optional<User> getUserByUsername(String username) {
-
         return entityManager.createQuery("select u from User u where u.username=:username")
                 .setParameter("username", username)
                 .setMaxResults(1)
