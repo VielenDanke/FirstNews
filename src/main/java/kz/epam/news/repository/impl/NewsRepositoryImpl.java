@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,5 +80,10 @@ public class NewsRepositoryImpl implements NewsDao<News> {
     @Override
     public void deleteById(Long id) {
         entityManager.createNativeQuery("delete from NEWS where ID=?").setParameter(1, id).executeUpdate();
+    }
+
+    @Override
+    public BigDecimal getNewsIdFromComments(Long id) {
+        return (BigDecimal) entityManager.createNativeQuery("select NEWS_ID from COMMENTS where ID = ?").setParameter(1, id).getSingleResult();
     }
 }

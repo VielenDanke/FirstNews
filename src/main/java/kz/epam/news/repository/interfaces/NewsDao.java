@@ -3,6 +3,7 @@ package kz.epam.news.repository.interfaces;
 import kz.epam.news.entity.News;
 import kz.epam.news.repository.DaoCRUD;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface NewsDao<E extends News> extends DaoCRUD<News> {
@@ -16,4 +17,6 @@ public interface NewsDao<E extends News> extends DaoCRUD<News> {
     E getNewsByID(Long id);
 
     List<String> getSections();
+
+    BigDecimal getNewsIdFromComments(Long id);
 }

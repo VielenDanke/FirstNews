@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.*;
 
@@ -96,7 +97,7 @@ public class NewsCommentController {
 
         commentServiceInterface.add(comment);
 
-        return "redirect:/";
+        return "redirect:/comments" + getStringToRedirect(comment.getId());
     }
 
     @RequestMapping("/comments")
@@ -146,7 +147,19 @@ public class NewsCommentController {
 
     @PostMapping("/delete/comment/{id}")
     public String deleteComment(@PathVariable("id") Long id) {
+
+        String toRedirect = getStringToRedirect(id);
+
         commentServiceInterface.deleteById(id);
-        return "redirect:/";
+
+        return "redirect:/comments" + toRedirect;
+    }
+
+    private String getStringToRedirect(Long id) {
+
+        BigDecimal bigDecimal = newsServiceInterface.getNewsIdFromComments(id);
+        News news = newsServiceInterface.getNewsByID(bigDecimal.longValue());
+
+        return "?id=" + news.getId() + "&section=" + news.getSection();
     }
 }
