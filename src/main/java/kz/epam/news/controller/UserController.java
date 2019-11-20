@@ -11,8 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -91,10 +91,33 @@ public class UserController {
     public ModelAndView startSearchingByUserDecision(@RequestParam("radio") String radio, @RequestParam("search") String search) {
 
         ModelAndView modelAndView = new ModelAndView("users");
+        StringJoiner stringJoiner = new StringJoiner("");
+
+        String regex = "\\d+";
+
+        for (Character c : search.toCharArray()) {
+            if (c.toString().matches(regex)) {
+                stringJoiner.add(c.toString());
+            }
+        }
+
+        String numbersFromJoiner = stringJoiner.toString();
+
+        if (numbersFromJoiner.isEmpty()) {
+            modelAndView.addObject("error", "Insert numbers");
+            return modelAndView;
+        }
+
+        Optional<User> user = userServiceInterface.getUserByID(Long.parseLong(numbersFromJoiner));
+
+        if (!user.isPresent()) {
+            modelAndView.addObject("error", "User not found");
+            return modelAndView;
+        }
 
         switch (radio) {
             case "ID":
-                modelAndView.addObject("userList", userServiceInterface.getUserByID(Long.parseLong(search)));
+                modelAndView.addObject("userList", Arrays.asList(user.get()));
                 return modelAndView;
             case "Username":
                 modelAndView.addObject("userList", userServiceInterface.getUsersByUsernameLike(search));

@@ -17,6 +17,7 @@
 </head>
 <body>
 <h3>Searching user</h3>
+${error}
 <form method="get" action="${pageContext.request.contextPath}/user/searching_by">
     <input type="text" name="search" placeholder="<spring:message code="index.type.text.placeholder"/>" maxlength="50" onkeyup="return symbolChecker(this)">
     <input type="radio" name="radio" value="ID" checked>Searching by id

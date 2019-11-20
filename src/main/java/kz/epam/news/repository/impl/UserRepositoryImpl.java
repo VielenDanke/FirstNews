@@ -33,10 +33,14 @@ public class UserRepositoryImpl implements UserDao<User> {
     }
 
     @Override
-    public List<User> getUserByID(Long id) {
-        Query query = entityManager.createNativeQuery("select id, username, password, enabled, name, surname, iin from USERS where ID=?");
-        query.setParameter(1, id);
-        return query.getResultList();
+    public Optional<User> getUserByID(Long id) {
+        return entityManager.createQuery("select u from User u where u.id=:id")
+                .setParameter("id", id)
+                .setMaxResults(1)
+                .getResultList()
+                .stream()
+                .findFirst();
+
     }
 
     @Override

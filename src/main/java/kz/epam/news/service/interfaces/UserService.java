@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UserService<E extends User> extends ServiceCRUD<User> {
 
-    List<E> getUserByID(Long id);
+    Optional<E> getUserByID(Long id);
 
     List<E> getUsersByUsernameLike(String usernameLike);
 

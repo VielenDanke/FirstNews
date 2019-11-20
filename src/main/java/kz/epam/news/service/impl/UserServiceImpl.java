@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService<User> {
     }
 
     @Override
-    public List<User> getUserByID(Long id) {
+    public Optional<User> getUserByID(Long id) {
         return userDao.getUserByID(id);
     }
 
