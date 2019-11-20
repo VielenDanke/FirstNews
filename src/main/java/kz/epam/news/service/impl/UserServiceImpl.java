@@ -53,4 +53,14 @@ public class UserServiceImpl implements UserService<User> {
     public void deleteById(Long id) {
         userDao.deleteById(id);
     }
+
+    @Override
+    public List<User> getUserByID(Long id) {
+        return userDao.getUserByID(id);
+    }
+
+    @Override
+    public List<User> getUsersByUsernameLike(String usernameLike) {
+        return userDao.getUsersByUsernameLike(usernameLike);
+    }
 }

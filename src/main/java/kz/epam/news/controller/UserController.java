@@ -2,12 +2,14 @@ package kz.epam.news.controller;
 
 import kz.epam.news.entity.Role;
 import kz.epam.news.entity.User;
+import kz.epam.news.exception.WrongDataException;
 import kz.epam.news.service.interfaces.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -83,5 +85,22 @@ public class UserController {
     public String toUserPage(Model model) {
         model.addAttribute("userList", userServiceInterface.getAll());
         return "users";
+    }
+
+    @GetMapping("/user/searching_by")
+    public ModelAndView startSearchingByUserDecision(@RequestParam("radio") String radio, @RequestParam("search") String search) {
+
+        ModelAndView modelAndView = new ModelAndView("users");
+
+        switch (radio) {
+            case "ID":
+                modelAndView.addObject("userList", userServiceInterface.getUserByID(Long.parseLong(search)));
+                return modelAndView;
+            case "Username":
+                modelAndView.addObject("userList", userServiceInterface.getUsersByUsernameLike(search));
+                return modelAndView;
+            default:
+                throw new WrongDataException("Not a valid searching method");
+        }
     }
 }

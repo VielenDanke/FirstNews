@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UserDao<E extends User> extends DaoCRUD<User> {
 
-    E getUserByID(Long id);
+    List<E> getUserByID(Long id);
 
     List<E> getUsersByUsernameLike(String usernameLike);
 
