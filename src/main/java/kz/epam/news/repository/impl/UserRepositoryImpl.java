@@ -45,8 +45,8 @@ public class UserRepositoryImpl implements UserDao<User> {
 
     @Override
     public List<User> getUsersByUsernameLike(String usernameLike) {
-        Query query = entityManager.createQuery("select u from User u where u.username like concat('%',:usernameLike,'%')");
-        query.setParameter("usernameLike", usernameLike);
+        Query query = entityManager.createQuery("select u from User u where upper(u.username) like concat('%',:usernameLike,'%')");
+        query.setParameter("usernameLike", usernameLike.toUpperCase());
         return query.getResultList();
     }
 
