@@ -16,8 +16,8 @@
     <jsp:include page="config.jsp"/>
     <style>
         .responsive {
-            max-height: 150px;
-            max-width: 150px;
+            max-height: 200px;
+            max-width: 200px;
         }
     </style>
 </head>

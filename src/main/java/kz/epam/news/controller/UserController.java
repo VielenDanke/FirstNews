@@ -91,32 +91,32 @@ public class UserController {
     public ModelAndView startSearchingByUserDecision(@RequestParam("radio") String radio, @RequestParam("search") String search) {
 
         ModelAndView modelAndView = new ModelAndView("users");
-        StringJoiner stringJoiner = new StringJoiner("");
-
-        String regex = "\\d+";
-
-        for (Character c : search.toCharArray()) {
-            if (c.toString().matches(regex)) {
-                stringJoiner.add(c.toString());
-            }
-        }
-
-        String numbersFromJoiner = stringJoiner.toString();
-
-        if (numbersFromJoiner.isEmpty()) {
-            modelAndView.addObject("error", "Insert numbers");
-            return modelAndView;
-        }
-
-        Optional<User> user = userServiceInterface.getUserByID(Long.parseLong(numbersFromJoiner));
-
-        if (!user.isPresent()) {
-            modelAndView.addObject("error", "User not found");
-            return modelAndView;
-        }
 
         switch (radio) {
             case "ID":
+                StringJoiner stringJoiner = new StringJoiner("");
+
+                String regex = "\\d+";
+
+                for (Character c : search.toCharArray()) {
+                    if (c.toString().matches(regex)) {
+                        stringJoiner.add(c.toString());
+                    }
+                }
+
+                String numbersFromJoiner = stringJoiner.toString();
+
+                if (numbersFromJoiner.isEmpty()) {
+                    modelAndView.addObject("error", "Insert numbers");
+                    return modelAndView;
+                }
+
+                Optional<User> user = userServiceInterface.getUserByID(Long.parseLong(numbersFromJoiner));
+
+                if (!user.isPresent()) {
+                    modelAndView.addObject("error", "User not found");
+                    return modelAndView;
+                }
                 modelAndView.addObject("userList", Arrays.asList(user.get()));
                 return modelAndView;
             case "Username":
