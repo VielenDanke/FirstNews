@@ -64,21 +64,31 @@ public class NewsCommentController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String addNews(@ModelAttribute("news") News news, @RequestParam("file") MultipartFile file, Model model) {
 
-        String uniqueCodeWithFileExtension = news.getTopic() + news.getShortDescription() +
-                new Random().nextInt(900) + file.getOriginalFilename();
+        if (file.getContentType().equalsIgnoreCase("image/jpeg") || file.getContentType().equalsIgnoreCase("image/jpg")
+                || file.getContentType().equalsIgnoreCase("image/png")) {
 
-        try {
-            news.setFileInputStreamName(Base64.getEncoder().encodeToString(file.getBytes()));
-        } catch (IOException e) {
-            throw new WrongDataException(e.getMessage());
+            if (file.isEmpty() || news.getSection() == null || news.getSection().equalsIgnoreCase("") || newsValidator(news)) {
+                throw new WrongDataException("All fields should be filled");
+            }
+
+            String uniqueCodeWithFileExtension = news.getTopic() + news.getShortDescription() +
+                    new Random().nextInt(900) + file.getOriginalFilename();
+
+            try {
+                news.setFileInputStreamName(Base64.getEncoder().encodeToString(file.getBytes()));
+            } catch (IOException e) {
+                throw new WrongDataException(e.getMessage());
+            }
+
+            news.setFileName(uniqueCodeWithFileExtension);
+            newsServiceInterface.add(news);
+
+            model.addAttribute("errorInFile", "File successfully uploaded");
+
+            return "sample";
+        } else {
+            throw new WrongDataException("Unsupported file format: " + file.getContentType());
         }
-
-        news.setFileName(uniqueCodeWithFileExtension);
-        newsServiceInterface.add(news);
-
-        model.addAttribute("errorInFile", "File successfully uploaded");
-
-        return "sample";
     }
 
     @RequestMapping("/section")
@@ -94,6 +104,10 @@ public class NewsCommentController {
 
     @RequestMapping(value = "/add_comment", method = RequestMethod.POST)
     public String addComment(@ModelAttribute("comment") Comment comment) {
+
+        if (comment.getDescriptionComment() == null || comment.getDescriptionComment().equalsIgnoreCase("")) {
+            throw new WrongDataException("Comment cannot be empty");
+        }
 
         commentServiceInterface.add(comment);
 
@@ -135,8 +149,13 @@ public class NewsCommentController {
     @PostMapping("/{id}")
     public String updateNews(@PathVariable("id") Long id, @ModelAttribute("news") News news) {
         news.setId(id);
-        newsServiceInterface.update(news);
-        return "redirect:/";
+
+        if (!newsValidator(news)) {
+            newsServiceInterface.update(news);
+            return "redirect:/";
+        } else {
+            throw new WrongDataException("All fields should be filled by update");
+        }
     }
 
     @PostMapping("/delete/{id}")
@@ -161,5 +180,12 @@ public class NewsCommentController {
         News news = newsServiceInterface.getNewsByID(bigDecimal.longValue());
 
         return "?id=" + news.getId() + "&section=" + news.getSection();
+    }
+
+    private boolean newsValidator(News news) {
+
+        return news.getTopic() == null || news.getShortDescription() == null || news.getDescription() == null
+                || news.getTopic().equalsIgnoreCase("") || news.getShortDescription().equalsIgnoreCase("")
+                || news.getDescription().equalsIgnoreCase("");
     }
 }

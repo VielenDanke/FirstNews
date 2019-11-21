@@ -18,18 +18,18 @@
 ${errorInFile}
     <form:form action="save" method="post" modelAttribute="news" enctype="multipart/form-data" acceptCharset="UTF-8">
         <div class="card" style="width: 18rem;">
-            <spring:message code="index.word.file"/>: <input type="file" name="file"/>
+            <spring:message code="index.word.file"/>: <input type="file" name="file" required="required"/>
             <div class="card-body">
                 <h5 class="card-title">Card title</h5>
                 <p class="card-text"><spring:message code="index.word.section"/>: <form:select path="section" items="${sectionList}"/></p>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><spring:message code="index.word.topic"/>:
-                    <form:input path="topic" onkeyup="return symbolChecker(this)"/></li>
+                    <form:input path="topic" onkeyup="return symbolChecker(this)" requaried="required"/></li>
                 <li class="list-group-item"><spring:message code="index.word.short.description"/>:
-                    <form:input path="shortDescription" onkeyup="return symbolChecker(this)"/></li>
+                    <form:input path="shortDescription" onkeyup="return symbolChecker(this)" requaried="required"/></li>
                 <li class="list-group-item"><spring:message code="index.word.description"/>:
-                    <form:input path="description" onkeyup="return symbolChecker(this)"/></li>
+                    <form:input path="description" onkeyup="return symbolChecker(this)" requaried="required"/></li>
             </ul>
             <div class="card-body">
                 <input type="submit" value="<spring:message code="index.word.save"/>">

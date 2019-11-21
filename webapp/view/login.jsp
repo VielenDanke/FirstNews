@@ -24,7 +24,9 @@
         </div>
 
         <form:form action="login" method="post" modelAttribute="user">
+            <h3><spring:message code="index.word.username"/></h3>
             <form:input path="username" cssClass="fadeIn second" onkeyup="return symbolChecker(this)"/>
+            <h3><spring:message code="index.word.password"/></h3>
             <form:password path="password" cssClass="fadeIn third" onkeyup="return symbolChecker(this)"/>
             <input type="submit" class="fadeIn fourth" value="<spring:message code="index.login"/>">
         </form:form>

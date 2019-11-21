@@ -61,6 +61,11 @@ public class UserController {
 
     private String saveUser(User user, Role role, Model model) {
 
+        if (user.getUsername() == null || user.getUsername().equalsIgnoreCase("")
+                || user.getPassword() == null || user.getPassword().equalsIgnoreCase("")) {
+            return "registration";
+        }
+
         Optional<User> userFromDB = userServiceInterface.getUserByUsername(user.getUsername());
 
         if (userFromDB.isPresent()) {
