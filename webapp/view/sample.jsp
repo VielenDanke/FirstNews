@@ -18,7 +18,7 @@
 ${errorInFile}
     <form:form action="save" method="post" modelAttribute="news" enctype="multipart/form-data" acceptCharset="UTF-8">
         <div class="card" style="width: 18rem;">
-            <spring:message code="index.word.file"/>: <input type="file" name="file" required="required"/>
+            <spring:message code="index.word.file"/>: <input type="file" name="file" required="required" accept="image/*"/>
             <div class="card-body">
                 <h5 class="card-title">Card title</h5>
                 <p class="card-text"><spring:message code="index.word.section"/>: <form:select path="section" items="${sectionList}"/></p>

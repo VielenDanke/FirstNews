@@ -61,34 +61,31 @@ public class NewsCommentController {
         return "error";
     }
 
+    // Make verify the file
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String addNews(@ModelAttribute("news") News news, @RequestParam("file") MultipartFile file, Model model) {
+    public ModelAndView addNews(@ModelAttribute("news") News news, @RequestParam(name = "file") MultipartFile file) {
 
-        if (file.getContentType().equalsIgnoreCase("image/jpeg") || file.getContentType().equalsIgnoreCase("image/jpg")
-                || file.getContentType().equalsIgnoreCase("image/png")) {
+        ModelAndView modelAndView = new ModelAndView("sample");
 
-            if (file.isEmpty() || news.getSection() == null || news.getSection().equalsIgnoreCase("") || newsValidator(news)) {
-                throw new WrongDataException("All fields should be filled");
-            }
-
-            String uniqueCodeWithFileExtension = news.getTopic() + news.getShortDescription() +
-                    new Random().nextInt(900) + file.getOriginalFilename();
-
-            try {
-                news.setFileInputStreamName(Base64.getEncoder().encodeToString(file.getBytes()));
-            } catch (IOException e) {
-                throw new WrongDataException(e.getMessage());
-            }
-
-            news.setFileName(uniqueCodeWithFileExtension);
-            newsServiceInterface.add(news);
-
-            model.addAttribute("errorInFile", "File successfully uploaded");
-
-            return "sample";
-        } else {
-            throw new WrongDataException("Unsupported file format: " + file.getContentType());
+        if (file.isEmpty() || news.getSection() == null || news.getSection().equalsIgnoreCase("") || newsValidator(news)) {
+            throw new WrongDataException("All fields should be filled");
         }
+
+        String uniqueCodeWithFileExtension = news.getTopic() + news.getShortDescription() +
+                new Random().nextInt(900) + file.getOriginalFilename();
+
+        try {
+            news.setFileInputStreamName(Base64.getEncoder().encodeToString(file.getBytes()));
+        } catch (IOException e) {
+            throw new WrongDataException(e.getMessage());
+        }
+
+        news.setFileName(uniqueCodeWithFileExtension);
+        newsServiceInterface.add(news);
+
+        modelAndView.addObject("errorInFile", "File successfully uploaded");
+
+        return modelAndView;
     }
 
     @RequestMapping("/section")

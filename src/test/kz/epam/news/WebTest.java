@@ -21,6 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -65,7 +66,9 @@ public class WebTest {
         comment = new Comment();
         news = new News();
         user = new User();
-        Path path = Paths.get("C:/Users/Vladislav_Dankevich/IdeaProjects/FirstNews/webapp/assets/img/breaking_news.png");
+        //C:/Users/Danke/Desktop/FirstNews/webapp/assets/img
+        //C:/Users/Vladislav_Dankevich/IdeaProjects/FirstNews/webapp/assets/img
+        Path path = Paths.get("C:/Users/Danke/Desktop/FirstNews/webapp/assets/img/breaking_news.png");
         mockMultipartFile = new MockMultipartFile("breaking_news.png", "breaking_news.png", "image/png", Files.readAllBytes(path));
 
         news = new News();
@@ -73,7 +76,6 @@ public class WebTest {
         news.setTopic("testing");
         news.setShortDescription("testing");
         news.setDescription("testing");
-        news.setFileName("testing");
 
         comment.setDescriptionComment("testing");
     }
@@ -122,14 +124,19 @@ public class WebTest {
     public void shouldRedirectAfterAddNotEmptyComment() throws Exception {
         newsService.add(news);
         comment.setNewsID(news.getId());
+
         this.mockMvc.perform(post("/add_comment").flashAttr("comment", comment))
                 .andExpect(status().is3xxRedirection());
     }
 
     @Test
     @Rollback
-    public void should() throws Exception {
-        this.mockMvc.perform(multipart("/save").file(mockMultipartFile).flashAttr("news", news))
+    public void shouldAddFileToDatabaseByUsingBase64EncoderAndAddNews() throws Exception {
+        MockHttpServletRequestBuilder multipart = multipart("/save")
+                .file("file", mockMultipartFile.getBytes())
+                .flashAttr("news", news);
+
+        this.mockMvc.perform(multipart)
                 .andExpect(status().isOk())
                 .andExpect(view().name("sample"));
     }
