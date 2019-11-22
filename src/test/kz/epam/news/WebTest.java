@@ -77,6 +77,7 @@ public class WebTest {
         news.setShortDescription("testing");
         news.setDescription("testing");
 
+        comment.setAuthorName("testing");
         comment.setDescriptionComment("testing");
     }
 

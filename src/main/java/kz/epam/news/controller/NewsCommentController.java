@@ -61,7 +61,6 @@ public class NewsCommentController {
         return "error";
     }
 
-    // Make verify the file
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView addNews(@ModelAttribute("news") News news, @RequestParam(name = "file") MultipartFile file) {
 
