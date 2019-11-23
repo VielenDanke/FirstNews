@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Vladislav_Dankevich
@@ -12,7 +13,7 @@
     <jsp:include page="config.jsp"/>
 </head>
 <body>
-    ${sessionScope.error}
+    <spring:message code="${sessionScope.error}"/>
     <a href="${pageContext.request.contextPath}/">Go to main page</a>
 </body>
 </html>
