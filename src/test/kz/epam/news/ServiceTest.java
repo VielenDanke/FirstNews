@@ -6,6 +6,8 @@ import kz.epam.news.config.web.WebAppInitializer;
 import kz.epam.news.config.web.WebConfig;
 import kz.epam.news.entity.News;
 import kz.epam.news.entity.User;
+import kz.epam.news.repository.interfaces.NewsDao;
+import kz.epam.news.repository.interfaces.UserDao;
 import kz.epam.news.service.interfaces.NewsService;
 import kz.epam.news.service.interfaces.UserService;
 import org.apache.log4j.Logger;
@@ -13,6 +15,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
@@ -36,6 +39,11 @@ public class ServiceTest {
     private NewsService<News> newsService;
     @Autowired
     private Logger logger;
+    @Mock
+    private UserDao<User> userDao;
+    @Mock
+    private NewsDao<News> newsDao;
+
     private User user;
     private News news;
     private List<News> newsArrayList;

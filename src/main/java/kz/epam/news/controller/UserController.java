@@ -19,8 +19,6 @@ public class UserController {
 
     @Autowired
     private UserService<User> userServiceInterface;
-    @Autowired
-    private Logger logger;
 
     @ModelAttribute("user")
     public User user() {
@@ -48,35 +46,22 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("user") User user, Model model) {
+    public String registration(@ModelAttribute("user") User user) {
 
-        return saveUser(user, Role.ROLE_USER, model);
+        user.setAuthority(Collections.singleton(Role.ROLE_USER));
+
+        userServiceInterface.add(user);
+
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/add_admin", method = RequestMethod.POST)
-    public String addAdmin(@ModelAttribute("user") User user, Model model) {
+    public String addAdmin(@ModelAttribute("user") User user) {
 
-        return saveUser(user, Role.ROLE_ADMIN, model);
-    }
+        user.setAuthority(Collections.singleton(Role.ROLE_ADMIN));
 
-    private String saveUser(User user, Role role, Model model) {
-
-        if (user.getUsername() == null || user.getUsername().equalsIgnoreCase("")
-                || user.getPassword() == null || user.getPassword().equalsIgnoreCase("")) {
-            return "registration";
-        }
-
-        Optional<User> userFromDB = userServiceInterface.getUserByUsername(user.getUsername());
-
-        if (userFromDB.isPresent()) {
-            logger.info("User exists");
-            model.addAttribute("error", "User exists");
-            return "registration";
-        }
-        logger.info("Creating new user");
-        user.setEnabled(1);
-        user.setAuthority(Collections.singleton(role));
         userServiceInterface.add(user);
+
         return "redirect:/";
     }
 

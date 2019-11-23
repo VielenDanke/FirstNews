@@ -1,6 +1,7 @@
 package kz.epam.news.service.impl;
 
 import kz.epam.news.entity.User;
+import kz.epam.news.exception.WrongDataException;
 import kz.epam.news.repository.interfaces.UserDao;
 import kz.epam.news.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +24,21 @@ public class UserServiceImpl implements UserService<User> {
     @Override
     @Transactional
     public void add(User user) {
+
+        if (user.getUsername() == null || user.getUsername().equalsIgnoreCase("")
+                || user.getPassword() == null || user.getPassword().equalsIgnoreCase("")) {
+            throw new WrongDataException("All fields should be filled");
+        }
+
         String passwordAfterEncode = passwordEncoder.encode(user.getPassword());
         user.setPassword(passwordAfterEncode);
+
+        Optional<User> userFromDB = userDao.getUserByUsername(user.getUsername());
+
+        if (userFromDB.isPresent()) {
+            throw new WrongDataException("User exists");
+        }
+        user.setEnabled(1);
         userDao.add(user);
     }
 
