@@ -33,7 +33,7 @@ public class NewsUploadFilter implements Filter {
                 && !section.isEmpty() && !topic.isEmpty() && !shortDescription.isEmpty() && !description.isEmpty()) {
             filterChain.doFilter(request, response);
         } else {
-            request.getSession().setAttribute("error", "Wrong file extension: " + part.getContentType());
+            request.getSession().setAttribute("error", "error.wrong.file.extension");
             response.sendRedirect(request.getContextPath() + "/error");
         }
     }

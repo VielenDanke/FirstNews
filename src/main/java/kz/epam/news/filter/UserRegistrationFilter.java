@@ -26,7 +26,7 @@ public class UserRegistrationFilter implements Filter {
         if (!username.isEmpty() && !password.isEmpty()) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            request.getSession().setAttribute("error", "All fields should be filled");
+            request.getSession().setAttribute("error", "error.all.fields.should.be.filled");
             response.sendRedirect(request.getContextPath() + "/error");
         }
     }

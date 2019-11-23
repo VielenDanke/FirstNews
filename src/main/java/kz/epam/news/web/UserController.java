@@ -106,7 +106,7 @@ public class UserController {
                 modelAndView.addObject("userList", userServiceInterface.getUsersByUsernameLike(search));
                 return modelAndView;
             default:
-                throw new WrongDataException("Not a valid searching method");
+                throw new WrongDataException("error.not.valid.searching");
         }
     }
 }

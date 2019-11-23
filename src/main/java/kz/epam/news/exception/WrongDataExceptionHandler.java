@@ -16,8 +16,7 @@ public class WrongDataExceptionHandler {
     @ExceptionHandler(WrongDataException.class)
     public String handleWrongFileException(HttpServletRequest request, Exception ex) {
 
-        logger.info("WrongFileException is happened: " + request.getRequestURL());
-        logger.info(ex.getMessage());
+        logger.info("Exception is happened: " + ex.getMessage());
 
         request.getSession().setAttribute("error", ex.getMessage());
 

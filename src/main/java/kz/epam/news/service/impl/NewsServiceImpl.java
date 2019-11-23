@@ -39,7 +39,7 @@ public class NewsServiceImpl implements NewsService<News> {
         try {
             news.setFileInputStreamName(Base64.getEncoder().encodeToString(file.getBytes()));
         } catch (IOException e) {
-            throw new WrongDataException(e.getMessage());
+            throw new WrongDataException("error.file.input.output");
         }
 
         news.setLocalDate(LocalDate.now());
@@ -97,7 +97,7 @@ public class NewsServiceImpl implements NewsService<News> {
         if (!news.getTopic().isEmpty() && !news.getShortDescription().isEmpty() && !news.getDescription().isEmpty()) {
             newsRepositoryInterface.update(news);
         } else {
-            throw new WrongDataException("All fields should be filled by update");
+            throw new WrongDataException("error.all.fields.should.be.filled");
         }
     }
 

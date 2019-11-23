@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService<User> {
         Optional<User> userFromDB = userRepositoryInterface.getUserByUsername(user.getUsername());
 
         if (userFromDB.isPresent()) {
-            throw new WrongDataException("User exists");
+            throw new WrongDataException("error.user.exists");
         }
 
         user.setEnabled(1);

@@ -21,7 +21,7 @@ public class CommentServiceImpl implements CommentService<Comment> {
     public void add(Comment comment) {
 
         if (comment.getDescriptionComment() == null || comment.getDescriptionComment().equalsIgnoreCase("")) {
-            throw new WrongDataException("Comment cannot be empty");
+            throw new WrongDataException("error.comment.not.empty");
         }
         commentRepositoryInterface.add(comment);
     }

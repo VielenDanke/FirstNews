@@ -119,7 +119,7 @@ public class NewsCommentController {
                 modelAndView.addObject("allNews", newsServiceInterface.getByDescriptionLike(search));
                 return modelAndView;
             default:
-                throw new WrongDataException("Not a valid searching method");
+                throw new WrongDataException("error.not.valid.searching");
         }
     }
 
