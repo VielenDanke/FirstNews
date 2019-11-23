@@ -1,10 +1,8 @@
 package kz.epam.news.controller;
 
-import kz.epam.news.entity.Role;
 import kz.epam.news.entity.User;
 import kz.epam.news.exception.WrongDataException;
 import kz.epam.news.service.interfaces.UserService;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -48,8 +45,6 @@ public class UserController {
     @RequestMapping(value = "/add_user", method = RequestMethod.POST)
     public String registration(@ModelAttribute("user") User user) {
 
-        user.setAuthority(Collections.singleton(Role.ROLE_USER));
-
         userServiceInterface.add(user);
 
         return "redirect:/";
@@ -57,8 +52,6 @@ public class UserController {
 
     @RequestMapping(value = "/add_admin", method = RequestMethod.POST)
     public String addAdmin(@ModelAttribute("user") User user) {
-
-        user.setAuthority(Collections.singleton(Role.ROLE_ADMIN));
 
         userServiceInterface.add(user);
 

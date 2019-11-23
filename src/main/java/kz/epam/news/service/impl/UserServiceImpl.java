@@ -1,5 +1,6 @@
 package kz.epam.news.service.impl;
 
+import kz.epam.news.entity.Role;
 import kz.epam.news.entity.User;
 import kz.epam.news.exception.WrongDataException;
 import kz.epam.news.repository.interfaces.UserDao;
@@ -33,7 +34,14 @@ public class UserServiceImpl implements UserService<User> {
         if (userFromDB.isPresent()) {
             throw new WrongDataException("User exists");
         }
+
         user.setEnabled(1);
+
+        if (user.getIin() != null) {
+            user.setAuthority(Collections.singleton(Role.ROLE_ADMIN));
+        } else {
+            user.setAuthority(Collections.singleton(Role.ROLE_USER));
+        }
         userDao.add(user);
     }
 
