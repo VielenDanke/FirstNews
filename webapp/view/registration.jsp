@@ -24,7 +24,7 @@
             <img src="${pageContext.request.contextPath}/assets/img/breaking_news.png" id="icon" alt="User Icon" />
         </div>
 
-        <form:form action="registration" method="post" modelAttribute="user">
+        <form:form action="add_user" method="post" modelAttribute="user">
             <h3><spring:message code="index.word.username"/></h3>
             <form:input path="username" cssClass="fadeIn second" onkeyup="return symbolChecker(this)"/>
             <h3><spring:message code="index.word.password"/></h3>

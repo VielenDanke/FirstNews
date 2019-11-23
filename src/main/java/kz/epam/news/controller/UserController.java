@@ -45,7 +45,7 @@ public class UserController {
        return "redirect:/";
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @RequestMapping(value = "/add_user", method = RequestMethod.POST)
     public String registration(@ModelAttribute("user") User user) {
 
         user.setAuthority(Collections.singleton(Role.ROLE_USER));

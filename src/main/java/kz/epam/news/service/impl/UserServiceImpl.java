@@ -25,11 +25,6 @@ public class UserServiceImpl implements UserService<User> {
     @Transactional
     public void add(User user) {
 
-        if (user.getUsername() == null || user.getUsername().equalsIgnoreCase("")
-                || user.getPassword() == null || user.getPassword().equalsIgnoreCase("")) {
-            throw new WrongDataException("All fields should be filled");
-        }
-
         String passwordAfterEncode = passwordEncoder.encode(user.getPassword());
         user.setPassword(passwordAfterEncode);
 
