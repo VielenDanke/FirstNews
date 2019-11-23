@@ -9,7 +9,6 @@ import kz.epam.news.entity.User;
 import kz.epam.news.service.interfaces.NewsService;
 import kz.epam.news.service.interfaces.UserService;
 import org.apache.log4j.Logger;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

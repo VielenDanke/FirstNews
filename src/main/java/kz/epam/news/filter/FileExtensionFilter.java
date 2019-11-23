@@ -1,7 +1,5 @@
 package kz.epam.news.filter;
 
-import kz.epam.news.exception.WrongDataException;
-
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +14,6 @@ public class FileExtensionFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override
@@ -26,21 +23,17 @@ public class FileExtensionFilter implements Filter {
 
         Part part = request.getPart("file");
 
-        switch (part.getContentType()) {
-            case "image/jpeg":
-                filterChain.doFilter(request, response);
-            case "image/png":
-                filterChain.doFilter(request, response);
-            case "image/jpg":
-                filterChain.doFilter(request, response);
-            default:
-                request.getSession().setAttribute("error", "Wrong file extension: " + part.getContentType());
-                response.sendRedirect(request.getContextPath() + "/error");
+        if (part.getContentType().equalsIgnoreCase("image/jpeg")
+                || part.getContentType().equalsIgnoreCase("image/png")
+                    || part.getContentType().equalsIgnoreCase("image/jpg")) {
+            filterChain.doFilter(request, response);
+        } else {
+            request.getSession().setAttribute("error", "Wrong file extension: " + part.getContentType());
+            response.sendRedirect(request.getContextPath() + "/error");
         }
     }
 
     @Override
     public void destroy() {
-
     }
 }
