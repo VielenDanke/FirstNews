@@ -33,10 +33,6 @@ public class NewsServiceImpl implements NewsService<News> {
     @Transactional
     public void addNewsWithFile(News news, MultipartFile file) {
 
-        if (file.isEmpty() || news.getSection() == null || news.getSection().equalsIgnoreCase("") || newsValidator(news)) {
-            throw new WrongDataException("All fields should be filled");
-        }
-
         String uniqueCodeWithFileExtension = news.getTopic() + news.getShortDescription() +
                 new Random().nextInt(900) + file.getOriginalFilename();
 
@@ -98,7 +94,7 @@ public class NewsServiceImpl implements NewsService<News> {
     @Override
     public void update(News news) {
 
-        if (!newsValidator(news)) {
+        if (!news.getTopic().isEmpty() && !news.getShortDescription().isEmpty() && !news.getDescription().isEmpty()) {
             newsRepositoryInterface.update(news);
         } else {
             throw new WrongDataException("All fields should be filled by update");
@@ -114,12 +110,5 @@ public class NewsServiceImpl implements NewsService<News> {
     @Override
     public BigDecimal getNewsIdFromComments(Long id) {
         return newsRepositoryInterface.getNewsIdFromComments(id);
-    }
-
-    private boolean newsValidator(News news) {
-
-        return news.getTopic() == null || news.getShortDescription() == null || news.getDescription() == null
-                || news.getTopic().equalsIgnoreCase("") || news.getShortDescription().equalsIgnoreCase("")
-                || news.getDescription().equalsIgnoreCase("");
     }
 }

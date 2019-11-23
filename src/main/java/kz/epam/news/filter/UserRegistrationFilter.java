@@ -4,13 +4,12 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import java.io.IOException;
 
 @WebFilter(
-        urlPatterns = "/save"
+        urlPatterns = {"/add_user", "/add_admin"}
 )
-public class FileExtensionFilter implements Filter {
+public class UserRegistrationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -21,14 +20,13 @@ public class FileExtensionFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        Part part = request.getPart("file");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
-        if (part.getContentType().equalsIgnoreCase("image/jpeg")
-                || part.getContentType().equalsIgnoreCase("image/png")
-                    || part.getContentType().equalsIgnoreCase("image/jpg")) {
-            filterChain.doFilter(request, response);
+        if (!username.isEmpty() && !password.isEmpty()) {
+            filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            request.getSession().setAttribute("error", "Wrong file extension: " + part.getContentType());
+            request.getSession().setAttribute("error", "All fields should be filled");
             response.sendRedirect(request.getContextPath() + "/error");
         }
     }
