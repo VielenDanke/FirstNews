@@ -1,6 +1,7 @@
 package kz.epam.news.service.impl;
 
 import kz.epam.news.entity.Comment;
+import kz.epam.news.exception.WrongDataException;
 import kz.epam.news.repository.interfaces.CommentDao;
 import kz.epam.news.service.interfaces.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class CommentServiceImpl implements CommentService<Comment> {
     @Override
     @Transactional
     public void add(Comment comment) {
+
+        if (comment.getDescriptionComment() == null || comment.getDescriptionComment().equalsIgnoreCase("")) {
+            throw new WrongDataException("Comment cannot be empty");
+        }
         commentDao.add(comment);
     }
 

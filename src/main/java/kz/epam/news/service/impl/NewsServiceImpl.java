@@ -1,16 +1,21 @@
 package kz.epam.news.service.impl;
 
 import kz.epam.news.entity.News;
+import kz.epam.news.exception.WrongDataException;
 import kz.epam.news.repository.interfaces.NewsDao;
 import kz.epam.news.service.interfaces.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class NewsServiceImpl implements NewsService<News> {
@@ -21,7 +26,28 @@ public class NewsServiceImpl implements NewsService<News> {
     @Override
     @Transactional
     public void add(News news) {
+        newsDao.add(news);
+    }
+
+    @Override
+    @Transactional
+    public void addNewsWithFile(News news, MultipartFile file) {
+
+        if (file.isEmpty() || news.getSection() == null || news.getSection().equalsIgnoreCase("") || newsValidator(news)) {
+            throw new WrongDataException("All fields should be filled");
+        }
+
+        String uniqueCodeWithFileExtension = news.getTopic() + news.getShortDescription() +
+                new Random().nextInt(900) + file.getOriginalFilename();
+
+        try {
+            news.setFileInputStreamName(Base64.getEncoder().encodeToString(file.getBytes()));
+        } catch (IOException e) {
+            throw new WrongDataException(e.getMessage());
+        }
+
         news.setLocalDate(LocalDate.now());
+        news.setFileName(uniqueCodeWithFileExtension);
         newsDao.add(news);
     }
 
@@ -71,7 +97,12 @@ public class NewsServiceImpl implements NewsService<News> {
 
     @Override
     public void update(News news) {
-        newsDao.update(news);
+
+        if (!newsValidator(news)) {
+            newsDao.update(news);
+        } else {
+            throw new WrongDataException("All fields should be filled by update");
+        }
     }
 
     @Override
@@ -83,5 +114,12 @@ public class NewsServiceImpl implements NewsService<News> {
     @Override
     public BigDecimal getNewsIdFromComments(Long id) {
         return newsDao.getNewsIdFromComments(id);
+    }
+
+    private boolean newsValidator(News news) {
+
+        return news.getTopic() == null || news.getShortDescription() == null || news.getDescription() == null
+                || news.getTopic().equalsIgnoreCase("") || news.getShortDescription().equalsIgnoreCase("")
+                || news.getDescription().equalsIgnoreCase("");
     }
 }

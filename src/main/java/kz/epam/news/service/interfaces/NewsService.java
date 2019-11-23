@@ -2,6 +2,7 @@ package kz.epam.news.service.interfaces;
 
 import kz.epam.news.entity.News;
 import kz.epam.news.service.ServiceCRUD;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,4 +20,6 @@ public interface NewsService<E extends News> extends ServiceCRUD<News> {
     List<String> getSectionList();
 
     BigDecimal getNewsIdFromComments(Long id);
+
+    void addNewsWithFile(News news, MultipartFile file);
 }

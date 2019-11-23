@@ -66,21 +66,7 @@ public class NewsCommentController {
 
         ModelAndView modelAndView = new ModelAndView("sample");
 
-        if (file.isEmpty() || news.getSection() == null || news.getSection().equalsIgnoreCase("") || newsValidator(news)) {
-            throw new WrongDataException("All fields should be filled");
-        }
-
-        String uniqueCodeWithFileExtension = news.getTopic() + news.getShortDescription() +
-                new Random().nextInt(900) + file.getOriginalFilename();
-
-        try {
-            news.setFileInputStreamName(Base64.getEncoder().encodeToString(file.getBytes()));
-        } catch (IOException e) {
-            throw new WrongDataException(e.getMessage());
-        }
-
-        news.setFileName(uniqueCodeWithFileExtension);
-        newsServiceInterface.add(news);
+        newsServiceInterface.addNewsWithFile(news, file);
 
         modelAndView.addObject("errorInFile", "File successfully uploaded");
 
@@ -100,10 +86,6 @@ public class NewsCommentController {
 
     @RequestMapping(value = "/add_comment", method = RequestMethod.POST)
     public String addComment(@ModelAttribute("comment") Comment comment) {
-
-        if (comment.getDescriptionComment() == null || comment.getDescriptionComment().equalsIgnoreCase("")) {
-            throw new WrongDataException("Comment cannot be empty");
-        }
 
         commentServiceInterface.add(comment);
 
@@ -146,12 +128,9 @@ public class NewsCommentController {
     public String updateNews(@PathVariable("id") Long id, @ModelAttribute("news") News news) {
         news.setId(id);
 
-        if (!newsValidator(news)) {
-            newsServiceInterface.update(news);
-            return "redirect:/";
-        } else {
-            throw new WrongDataException("All fields should be filled by update");
-        }
+        newsServiceInterface.update(news);
+
+        return "redirect:/";
     }
 
     @PostMapping("/delete/{id}")
@@ -176,12 +155,5 @@ public class NewsCommentController {
         News news = newsServiceInterface.getNewsByID(bigDecimal.longValue());
 
         return "?id=" + news.getId() + "&section=" + news.getSection();
-    }
-
-    private boolean newsValidator(News news) {
-
-        return news.getTopic() == null || news.getShortDescription() == null || news.getDescription() == null
-                || news.getTopic().equalsIgnoreCase("") || news.getShortDescription().equalsIgnoreCase("")
-                || news.getDescription().equalsIgnoreCase("");
     }
 }
