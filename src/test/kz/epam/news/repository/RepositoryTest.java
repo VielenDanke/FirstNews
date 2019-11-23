@@ -1,4 +1,4 @@
-package kz.epam.news;
+package kz.epam.news.repository;
 
 import kz.epam.news.config.HibernateConfig;
 import kz.epam.news.config.security.SecurityConfig;
@@ -6,16 +6,13 @@ import kz.epam.news.config.web.WebAppInitializer;
 import kz.epam.news.config.web.WebConfig;
 import kz.epam.news.entity.News;
 import kz.epam.news.entity.User;
-import kz.epam.news.repository.interfaces.NewsDao;
-import kz.epam.news.repository.interfaces.UserDao;
-import kz.epam.news.service.interfaces.NewsService;
-import kz.epam.news.service.interfaces.UserService;
+import kz.epam.news.repository.interfaces.NewsRepositoryInterface;
+import kz.epam.news.repository.interfaces.UserRepositoryInterface;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,18 +28,14 @@ import java.util.List;
 @ContextConfiguration(classes = {HibernateConfig.class, WebConfig.class, SecurityConfig.class, WebAppInitializer.class})
 @WebAppConfiguration
 @Transactional
-public class ServiceTest {
+public class RepositoryTest {
 
     @Autowired
-    private UserService<User> userService;
+    private UserRepositoryInterface<User> userRepositoryInterface;
     @Autowired
-    private NewsService<News> newsService;
+    private NewsRepositoryInterface<News> newsRepositoryInterface;
     @Autowired
     private Logger logger;
-    @Mock
-    private UserDao<User> userDao;
-    @Mock
-    private NewsDao<News> newsDao;
 
     private User user;
     private News news;
@@ -73,10 +66,10 @@ public class ServiceTest {
     @Rollback
     public void userServiceInterfaceMethodTestingShouldReturnNotNullValues() {
         logger.info("*****STARTING******");
-        userService.add(user);
-        Assert.assertNotNull(userService.getUserByID(user.getId()));
-        Assert.assertNotNull(userService.getUserByUsername("testing"));
-        Assert.assertNotNull(userService.getUsersByUsernameLike("est"));
+        userRepositoryInterface.add(user);
+        Assert.assertNotNull(userRepositoryInterface.getUserByID(user.getId()));
+        Assert.assertNotNull(userRepositoryInterface.getUserByUsername("testing"));
+        Assert.assertNotNull(userRepositoryInterface.getUsersByUsernameLike("est"));
         logger.info("*****FINISHING******");
     }
 
@@ -84,11 +77,11 @@ public class ServiceTest {
     @Rollback
     public void newsServiceInterfaceTestingShouldReturnNotNullValues() {
         logger.info("*****STARTING******");
-        newsService.add(news);
-        Assert.assertNotNull(newsService.getBySection("testing"));
-        Assert.assertEquals(newsArrayList, newsService.getByTopicLike("est"));
-        Assert.assertNotNull(newsService.getByDescriptionLike("est"));
-        Assert.assertNotNull(newsService.getNewsByID(news.getId()));
+        newsRepositoryInterface.add(news);
+        Assert.assertNotNull(newsRepositoryInterface.getNewsBySection("testing"));
+        Assert.assertEquals(newsArrayList, newsRepositoryInterface.getNewsByTopicLike("est"));
+        Assert.assertNotNull(newsRepositoryInterface.getNewsByDescriptionLike("est"));
+        Assert.assertNotNull(newsRepositoryInterface.getNewsByID(news.getId()));
         logger.info("*****FINISHING******");
     }
 }

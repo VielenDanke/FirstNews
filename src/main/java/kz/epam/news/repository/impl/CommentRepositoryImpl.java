@@ -1,7 +1,7 @@
 package kz.epam.news.repository.impl;
 
 import kz.epam.news.entity.Comment;
-import kz.epam.news.repository.interfaces.CommentDao;
+import kz.epam.news.repository.interfaces.CommentRepositoryInterface;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -14,7 +14,7 @@ import static kz.epam.news.config.HibernateConfig.CACHEABLE_FLAG;
 
 @Repository
 @SuppressWarnings("unchecked")
-public class CommentRepositoryImpl implements CommentDao<Comment> {
+public class CommentRepositoryImpl implements CommentRepositoryInterface<Comment> {
 
     @PersistenceContext
     private EntityManager entityManager;

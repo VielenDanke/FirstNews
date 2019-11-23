@@ -2,7 +2,7 @@ package kz.epam.news.service.impl;
 
 import kz.epam.news.entity.Comment;
 import kz.epam.news.exception.WrongDataException;
-import kz.epam.news.repository.interfaces.CommentDao;
+import kz.epam.news.repository.interfaces.CommentRepositoryInterface;
 import kz.epam.news.service.interfaces.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService<Comment> {
 
     @Autowired
-    private CommentDao<Comment> commentDao;
+    private CommentRepositoryInterface<Comment> commentRepositoryInterface;
 
     @Override
     @Transactional
@@ -23,33 +23,33 @@ public class CommentServiceImpl implements CommentService<Comment> {
         if (comment.getDescriptionComment() == null || comment.getDescriptionComment().equalsIgnoreCase("")) {
             throw new WrongDataException("Comment cannot be empty");
         }
-        commentDao.add(comment);
+        commentRepositoryInterface.add(comment);
     }
 
     @Override
     public List<Comment> getAll() {
-        return commentDao.getAll();
+        return commentRepositoryInterface.getAll();
     }
 
     @Override
     @Transactional
     public void deleteAll() {
-        commentDao.deleteAll();
+        commentRepositoryInterface.deleteAll();
     }
 
     @Override
     public List<Comment> getAllCommentsByNewsID(Long newsID) {
-        return commentDao.selectAllCommentsByNewsID(newsID);
+        return commentRepositoryInterface.selectAllCommentsByNewsID(newsID);
     }
 
     @Override
     public void update(Comment comment) {
-        commentDao.update(comment);
+        commentRepositoryInterface.update(comment);
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        commentDao.deleteById(id);
+        commentRepositoryInterface.deleteById(id);
     }
 }

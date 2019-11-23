@@ -1,4 +1,4 @@
-package kz.epam.news;
+package kz.epam.news.web;
 
 import kz.epam.news.config.HibernateConfig;
 import kz.epam.news.config.security.SecurityConfig;

@@ -1,12 +1,12 @@
 package kz.epam.news.repository.interfaces;
 
 import kz.epam.news.entity.News;
-import kz.epam.news.repository.DaoCRUD;
+import kz.epam.news.repository.CRUDRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface NewsDao<E extends News> extends DaoCRUD<News> {
+public interface NewsRepositoryInterface<E extends News> extends CRUDRepository<News> {
 
     List<E> getNewsByTopicLike(String topicLike);
 

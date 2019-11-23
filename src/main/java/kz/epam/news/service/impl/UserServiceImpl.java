@@ -3,7 +3,7 @@ package kz.epam.news.service.impl;
 import kz.epam.news.entity.Role;
 import kz.epam.news.entity.User;
 import kz.epam.news.exception.WrongDataException;
-import kz.epam.news.repository.interfaces.UserDao;
+import kz.epam.news.repository.interfaces.UserRepositoryInterface;
 import kz.epam.news.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService<User> {
 
     @Autowired
-    private UserDao<User> userDao;
+    private UserRepositoryInterface<User> userRepositoryInterface;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -26,10 +26,9 @@ public class UserServiceImpl implements UserService<User> {
     @Transactional
     public void add(User user) {
 
-        String passwordAfterEncode = passwordEncoder.encode(user.getPassword());
-        user.setPassword(passwordAfterEncode);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Optional<User> userFromDB = userDao.getUserByUsername(user.getUsername());
+        Optional<User> userFromDB = userRepositoryInterface.getUserByUsername(user.getUsername());
 
         if (userFromDB.isPresent()) {
             throw new WrongDataException("User exists");
@@ -42,43 +41,43 @@ public class UserServiceImpl implements UserService<User> {
         } else {
             user.setAuthority(Collections.singleton(Role.ROLE_USER));
         }
-        userDao.add(user);
+        userRepositoryInterface.add(user);
     }
 
     @Override
     public List<User> getAll() {
-        return userDao.getAll();
+        return userRepositoryInterface.getAll();
     }
 
     @Override
     @Transactional
     public void deleteAll() {
-        userDao.deleteAll();
+        userRepositoryInterface.deleteAll();
     }
 
     @Override
     public Optional<User> getUserByUsername(String username) {
-        return userDao.getUserByUsername(username);
+        return userRepositoryInterface.getUserByUsername(username);
     }
 
     @Override
     public void update(User user) {
-        userDao.update(user);
+        userRepositoryInterface.update(user);
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        userDao.deleteById(id);
+        userRepositoryInterface.deleteById(id);
     }
 
     @Override
     public Optional<User> getUserByID(Long id) {
-        return userDao.getUserByID(id);
+        return userRepositoryInterface.getUserByID(id);
     }
 
     @Override
     public List<User> getUsersByUsernameLike(String usernameLike) {
-        return userDao.getUsersByUsernameLike(usernameLike);
+        return userRepositoryInterface.getUsersByUsernameLike(usernameLike);
     }
 }

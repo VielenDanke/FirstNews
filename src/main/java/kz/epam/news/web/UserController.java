@@ -1,4 +1,4 @@
-package kz.epam.news.controller;
+package kz.epam.news.web;
 
 import kz.epam.news.entity.User;
 import kz.epam.news.exception.WrongDataException;

@@ -1,7 +1,7 @@
 package kz.epam.news.repository.impl;
 
 import kz.epam.news.entity.User;
-import kz.epam.news.repository.interfaces.UserDao;
+import kz.epam.news.repository.interfaces.UserRepositoryInterface;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 @SuppressWarnings("unchecked")
-public class UserRepositoryImpl implements UserDao<User> {
+public class UserRepositoryImpl implements UserRepositoryInterface<User> {
 
     @PersistenceContext
     private EntityManager entityManager;

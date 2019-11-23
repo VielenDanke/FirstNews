@@ -2,7 +2,7 @@ package kz.epam.news.service.impl;
 
 import kz.epam.news.entity.News;
 import kz.epam.news.exception.WrongDataException;
-import kz.epam.news.repository.interfaces.NewsDao;
+import kz.epam.news.repository.interfaces.NewsRepositoryInterface;
 import kz.epam.news.service.interfaces.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +21,12 @@ import java.util.Random;
 public class NewsServiceImpl implements NewsService<News> {
 
     @Autowired
-    private NewsDao<News> newsDao;
+    private NewsRepositoryInterface<News> newsRepositoryInterface;
 
     @Override
     @Transactional
     public void add(News news) {
-        newsDao.add(news);
+        newsRepositoryInterface.add(news);
     }
 
     @Override
@@ -48,12 +48,12 @@ public class NewsServiceImpl implements NewsService<News> {
 
         news.setLocalDate(LocalDate.now());
         news.setFileName(uniqueCodeWithFileExtension);
-        newsDao.add(news);
+        newsRepositoryInterface.add(news);
     }
 
     @Override
     public List<News> getAll() {
-        List<News> newsList = newsDao.getAll();
+        List<News> newsList = newsRepositoryInterface.getAll();
 
         if (newsList.isEmpty()) {
             newsList = new ArrayList<>();
@@ -61,45 +61,45 @@ public class NewsServiceImpl implements NewsService<News> {
 
             return newsList;
         }
-        return newsDao.getAll();
+        return newsRepositoryInterface.getAll();
     }
 
     @Override
     @Transactional
     public void deleteAll() {
-        newsDao.deleteAll();
+        newsRepositoryInterface.deleteAll();
     }
 
     @Override
     public List<News> getBySection(String section) {
-        return newsDao.getNewsBySection(section);
+        return newsRepositoryInterface.getNewsBySection(section);
     }
 
     @Override
     public List<News> getByTopicLike(String topic) {
-        return newsDao.getNewsByTopicLike(topic);
+        return newsRepositoryInterface.getNewsByTopicLike(topic);
     }
 
     @Override
     public List<News> getByDescriptionLike(String description) {
-        return newsDao.getNewsByDescriptionLike(description);
+        return newsRepositoryInterface.getNewsByDescriptionLike(description);
     }
 
     @Override
     public News getNewsByID(Long id) {
-        return newsDao.getNewsByID(id);
+        return newsRepositoryInterface.getNewsByID(id);
     }
 
     @Override
     public List<String> getSectionList() {
-        return newsDao.getSections();
+        return newsRepositoryInterface.getSections();
     }
 
     @Override
     public void update(News news) {
 
         if (!newsValidator(news)) {
-            newsDao.update(news);
+            newsRepositoryInterface.update(news);
         } else {
             throw new WrongDataException("All fields should be filled by update");
         }
@@ -108,12 +108,12 @@ public class NewsServiceImpl implements NewsService<News> {
     @Override
     @Transactional
     public void deleteById(Long id) {
-        newsDao.deleteById(id);
+        newsRepositoryInterface.deleteById(id);
     }
 
     @Override
     public BigDecimal getNewsIdFromComments(Long id) {
-        return newsDao.getNewsIdFromComments(id);
+        return newsRepositoryInterface.getNewsIdFromComments(id);
     }
 
     private boolean newsValidator(News news) {

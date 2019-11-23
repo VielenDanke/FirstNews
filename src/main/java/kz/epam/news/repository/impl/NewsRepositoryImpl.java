@@ -1,13 +1,12 @@
 package kz.epam.news.repository.impl;
 
 import kz.epam.news.entity.News;
-import kz.epam.news.repository.interfaces.NewsDao;
+import kz.epam.news.repository.interfaces.NewsRepositoryInterface;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import static kz.epam.news.config.HibernateConfig.CACHEABLE;
@@ -15,7 +14,7 @@ import static kz.epam.news.config.HibernateConfig.CACHEABLE_FLAG;
 
 @Repository
 @SuppressWarnings("unchecked")
-public class NewsRepositoryImpl implements NewsDao<News> {
+public class NewsRepositoryImpl implements NewsRepositoryInterface<News> {
 
     @PersistenceContext
     private EntityManager entityManager;

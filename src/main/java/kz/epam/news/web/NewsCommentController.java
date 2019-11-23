@@ -1,4 +1,4 @@
-package kz.epam.news.controller;
+package kz.epam.news.web;
 
 import kz.epam.news.entity.Comment;
 import kz.epam.news.entity.News;
