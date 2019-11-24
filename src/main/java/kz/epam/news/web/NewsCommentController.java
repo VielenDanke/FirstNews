@@ -98,7 +98,7 @@ public class NewsCommentController {
 
         List<Comment> comments = commentServiceInterface.getAllCommentsByNewsID(id);
 
-        ModelAndView modelAndView = new ModelAndView("comments");
+        ModelAndView modelAndView = new ModelAndView("all_comments");
         modelAndView.addObject("username", principal.getName());
         modelAndView.addObject("comments_to_news", comments);
         modelAndView.addObject("news_by_id", news);

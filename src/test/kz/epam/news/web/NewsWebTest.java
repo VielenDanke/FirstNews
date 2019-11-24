@@ -7,12 +7,17 @@ import kz.epam.news.config.web.WebConfig;
 import kz.epam.news.entity.Comment;
 import kz.epam.news.entity.News;
 import kz.epam.news.entity.User;
+import kz.epam.news.service.interfaces.CommentService;
 import kz.epam.news.service.interfaces.NewsService;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockServletContext;
@@ -34,12 +39,17 @@ import javax.servlet.http.Part;
 import javax.transaction.Transactional;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -50,63 +60,39 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class NewsWebTest {
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-    @Autowired
+    @Mock
     private NewsService<News> newsService;
+    @Mock
+    private CommentService<Comment> commentService;
+    @InjectMocks
+    private NewsCommentController newsCommentController;
     private MockMvc mockMvc;
+
     private Comment comment;
     private News news;
     private MockMultipartFile mockMultipartFile;
 
     @Before
     public void setup() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+        MockitoAnnotations.initMocks(this);
+        this.mockMvc = MockMvcBuilders.standaloneSetup(newsCommentController).build();
         comment = new Comment();
         news = new News();
-        //C:/Users/Danke/Desktop/FirstNews/webapp/assets/img
-        //C:/Users/Vladislav_Dankevich/IdeaProjects/FirstNews/webapp/assets/img
-        Path path = Paths.get("C:/Users/Danke/Desktop/FirstNews/webapp/assets/img/breaking_news.png");
-        mockMultipartFile = new MockMultipartFile("breaking_news.png", "breaking_news.png", "image/png", Files.readAllBytes(path));
-
-        news = new News();
-        news.setSection("testing");
-        news.setTopic("testing");
-        news.setShortDescription("testing");
-        news.setDescription("testing");
-
-        comment.setAuthorName("testing");
-        comment.setDescriptionComment("testing");
-    }
-
-    @Test
-    public void configTest() {
-        ServletContext servletContext = webApplicationContext.getServletContext();
-
-        Assert.assertNotNull(servletContext);
-        Assert.assertTrue(servletContext instanceof MockServletContext);
-        Assert.assertNotNull(webApplicationContext.getBean("userController"));
-        Assert.assertNotNull(webApplicationContext.getBean("newsCommentController"));
+        mockMultipartFile = new MockMultipartFile("a", "a", "a", "123".getBytes());
     }
 
     @Test
     public void getMethodShouldReturnCorrectView() throws Exception {
-        this.mockMvc.perform(get("/registration")).andDo(print())
-                .andExpect(view().name("registration"));
-
-        this.mockMvc.perform(get("/add_admin")).andDo(print())
-                .andExpect(view().name("add_admin"));
-
-        this.mockMvc.perform(get("/login")).andDo(print())
-                .andExpect(view().name("login"));
-
         this.mockMvc.perform(get("/add")).andDo(print())
                 .andExpect(view().name("sample"));
     }
 
     @Test
     public void getAllItemsAndRedirectToMainPage() throws Exception {
+        Mockito.when(newsService.getAll()).thenReturn(new ArrayList<>(Arrays.asList(news)));
+
         this.mockMvc.perform(get("/"))
+                .andExpect(model().attributeExists("allNews", "lastNews"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
     }
@@ -119,17 +105,19 @@ public class NewsWebTest {
     }
 
     @Test
-    @Rollback
     public void shouldRedirectAfterAddNotEmptyComment() throws Exception {
-        newsService.add(news);
-        comment.setNewsID(news.getId());
+        BigDecimal bigDecimal = new BigDecimal(1);
 
-        this.mockMvc.perform(post("/add_comment").flashAttr("comment", comment))
-                .andExpect(status().is3xxRedirection());
+        MockHttpServletRequestBuilder postBuilder = post("/add_comment")
+                .flashAttr("comment", comment);
+
+        Mockito.when(newsService.getNewsIdFromComments(comment.getId())).thenReturn(bigDecimal);
+        Mockito.when(newsService.getNewsByID(bigDecimal.longValue())).thenReturn(new News());
+
+        this.mockMvc.perform(postBuilder).andExpect(status().is3xxRedirection());
     }
 
     @Test
-    @Rollback
     public void shouldAddFileToDatabaseByUsingBase64EncoderAndAddNews() throws Exception {
         MockHttpServletRequestBuilder multipart = multipart("/save")
                 .file("file", mockMultipartFile.getBytes())
@@ -138,5 +126,37 @@ public class NewsWebTest {
         this.mockMvc.perform(multipart)
                 .andExpect(status().isOk())
                 .andExpect(view().name("sample"));
+    }
+
+    @Test
+    public void shouldReturnAllComments() throws Exception {
+        Long id = (long) 1;
+        MockHttpServletRequestBuilder getBuilder = get("/comments")
+                .param("id", "1")
+                .principal(() -> "Oleg");
+
+        Mockito.when(newsService.getNewsByID(id)).thenReturn(news);
+        Mockito.when(commentService.getAllCommentsByNewsID(id)).thenReturn(new ArrayList<>(Arrays.asList(comment)));
+
+        this.mockMvc.perform(getBuilder)
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("username", "comments_to_news", "news_by_id"))
+                .andExpect(view().name("all_comments"));
+    }
+
+    @Test
+    public void shouldReturnMainPageWithCurrentSectionList() throws Exception {
+
+        MockHttpServletRequestBuilder getBuilder = get("/searching_by")
+                .param("radio", "Topic")
+                .param("search", "search");
+
+        Mockito.when(newsService.getByTopicLike("search")).thenReturn(Arrays.asList(news));
+        Mockito.when(newsService.getByDescriptionLike("search")).thenReturn(Arrays.asList(news));
+
+        this.mockMvc.perform(getBuilder)
+                .andExpect(model().attributeExists("allNews"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"));
     }
 }
