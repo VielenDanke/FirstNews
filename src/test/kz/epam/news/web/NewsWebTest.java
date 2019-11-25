@@ -146,17 +146,48 @@ public class NewsWebTest {
 
     @Test
     public void shouldReturnMainPageWithCurrentSectionList() throws Exception {
+        String search = "search";
 
         MockHttpServletRequestBuilder getBuilder = get("/searching_by")
                 .param("radio", "Topic")
-                .param("search", "search");
+                .param(search, search);
 
-        Mockito.when(newsService.getByTopicLike("search")).thenReturn(Arrays.asList(news));
-        Mockito.when(newsService.getByDescriptionLike("search")).thenReturn(Arrays.asList(news));
+        Mockito.when(newsService.getByTopicLike(search)).thenReturn(Arrays.asList(news));
+        Mockito.when(newsService.getByDescriptionLike(search)).thenReturn(Arrays.asList(news));
 
         this.mockMvc.perform(getBuilder)
                 .andExpect(model().attributeExists("allNews"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
+    }
+
+    @Test
+    public void shouldUpdateNewsByIncomingId() throws Exception {
+        MockHttpServletRequestBuilder postBuilder = post("/{id}", any(Long.TYPE))
+                .flashAttr("news", news);
+
+        this.mockMvc.perform(postBuilder)
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    public void shouldDeleteNewsById() throws Exception {
+        MockHttpServletRequestBuilder postBuilder = post("/delete/{id}", any(Long.TYPE));
+
+        this.mockMvc.perform(postBuilder)
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    public void shouldDeleteCommentById() throws Exception {
+        BigDecimal bigDecimal = new BigDecimal(1);
+
+        MockHttpServletRequestBuilder postBuilder = post("/delete/comment/{id}", bigDecimal.longValue());
+
+        Mockito.when(newsService.getNewsIdFromComments(bigDecimal.longValue())).thenReturn(bigDecimal);
+        Mockito.when(newsService.getNewsByID(bigDecimal.longValue())).thenReturn(new News());
+
+        this.mockMvc.perform(postBuilder)
+                .andExpect(status().is3xxRedirection());
     }
 }
