@@ -1,6 +1,7 @@
 package kz.epam.news.config.security;
 
 import kz.epam.news.exception.NewsAccessDeniedException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,12 +17,11 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private DataSource dataSource;
-    @Autowired
-    private NewsAccessDeniedException newsAccessDeniedException;
+    private final DataSource dataSource;
+    private final NewsAccessDeniedException newsAccessDeniedException;
 
     @Override
     @Autowired

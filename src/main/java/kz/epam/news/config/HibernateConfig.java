@@ -1,5 +1,6 @@
 package kz.epam.news.config;
 
+import lombok.RequiredArgsConstructor;
 import oracle.jdbc.driver.OracleDriver;
 import org.apache.log4j.Logger;
 import org.hibernate.jpa.HibernatePersistenceProvider;
@@ -22,6 +23,7 @@ import java.util.Properties;
         @PropertySource("classpath:database.properties"),
         @PropertySource("classpath:hibernate.properties")
 })
+@RequiredArgsConstructor
 public class HibernateConfig {
 
     public static final String CACHEABLE = "org.hibernate.cacheable";
@@ -34,8 +36,7 @@ public class HibernateConfig {
     private static final String CACHE_REGION = "hibernate.cache.region.factory_class";
     private static final String QUERY_CACHE = "hibernate.cache.use_query_cache";
 
-    @Autowired
-    private Environment environment;
+    private final Environment environment;
 
     @Bean
     public DriverManagerDataSource newsDataSource() {
