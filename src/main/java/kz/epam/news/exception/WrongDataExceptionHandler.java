@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class WrongDataExceptionHandler {
 
-    @Autowired
     private Logger logger;
 
     @ExceptionHandler(WrongDataException.class)
@@ -21,5 +20,10 @@ public class WrongDataExceptionHandler {
         request.getSession().setAttribute("error", ex.getMessage());
 
         return "error";
+    }
+
+    @Autowired
+    public void setLogger(Logger logger) {
+        this.logger = logger;
     }
 }
